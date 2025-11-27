@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Grid Guardians</title>
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --main-text-color: #e0e0e0;
+            --accent-color: #007bff;
+            --coal-color: #3b3b3b;
+            --solar-color: #f7d73b;
+            --wind-color: #b3e6ff;
+            --nuclear-color: #d8c3e0;
+            --hydro-color: #00bcd4;
+            --info-panel-bg: rgba(43, 43, 66, 0.8);
+            --info-panel-border: #444466;
+            --error-color: #e74c3c;
+            --success-color: #2ecc71;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--main-text-color);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #canvas-container {
+            position: relative;
+            width: 100%;
+            height: 70%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 20px;
+        }
+
+        canvas {
+            background-color: #2b2b3e;
+            border: 2px solid var(--info-panel-border);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: crosshair;
+        }
+
+        #ui-container {
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background-color: var(--bg-color);
+        }
+        
+        #stats-panel, #message-box {
+            background-color: var(--info-panel-bg);
+            border: 1px solid var(--info-panel-border);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        #stats-panel {
+            flex: 1;
+            margin-right: 20px;
+            max-width: 300px;
+        }
+
+        #stats-panel div {
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #stats-panel span {
+            font-weight: bold;
+        }
+        
+        #controls-panel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        .control-button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .control-button.active {
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+            transform: translateY(0);
+        }
+
+        .control-button.place-coal { background-color: var(--coal-color); color: #fff; }
+        .control-button.place-solar { background-color: var(--solar-color); }
+        .control-button.place-wind { background-color: var(--wind-color); }
+        .control-button.place-nuclear { background-color: var(--nuclear-color); }
+        .control-button.place-hydro { background-color: var(--hydro-color); }
+        .control-button.place-line { background-color: var(--accent-color); color: #fff; }
+        .control-button.place-home { background-color: #3498db; color: #fff; }
+        .control-button.place-school { background-color: #9b59b6; color: #fff; }
+        .control-button.place-factory { background-color: #e67e22; color: #fff; }
+
+        #message-box {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            z-index: 100;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--accent-color);
+            border-radius: 10px;
+            display: none;
+        }
+        
+        #modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+        
+        #modal-content {
+            background-color: var(--info-panel-bg);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            border: 2px solid var(--info-panel-border);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        #modal-title {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+        }
+        
+        #modal-message {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+        
+        .modal-button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+        
+        .modal-button:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            #ui-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #stats-panel {
+                margin-right: 0;
+                margin-bottom: 15px;
+                max-width: 100%;
+            }
+
+            .control-button {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+ <a href="{% url 'home' %}" class="mt-6 inline-block text-green-700 font-semibold hover:underline">← Back to Dashboard</a>
+<div id="game-container">
+    <div id="canvas-container">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+
+    <div id="ui-container">
+        <div id="stats-panel">
+            <div>
+                <span>Power Generated:</span>
+                <span id="powerGenerated">0 MW</span>
+            </div>
+            <div>
+                <span>Power Demand:</span>
+                <span id="powerDemand">0 MW</span>
+            </div>
+            <div>
+                <span>Budget:</span>
+                <span id="budget">$0</span>
+            </div>
+            <div>
+                <span>Pollution:</span>
+                <span id="pollution">0%</span>
+            </div>
+            <div>
+                <span>Population:</span>
+                <span id="populationCount">0</span>
+            </div>
+        </div>
+
+        <div id="controls-panel">
+            <button class="control-button place-coal" data-type="coal">Coal ($500)</button>
+            <button class="control-button place-solar" data-type="solar">Solar ($300)</button>
+            <button class="control-button place-wind" data-type="wind">Wind ($300)</button>
+            <button class="control-button place-nuclear" data-type="nuclear">Nuclear ($1500)</button>
+            <button class="control-button place-hydro" data-type="hydro">Hydro ($2000)</button>
+            <button class="control-button place-line active" data-type="line">Power Line ($10)</button>
+            <button class="control-button place-home" data-type="home">Home ($100)</button>
+            <button class="control-button place-school" data-type="school">School ($250)</button>
+            <button class="control-button place-factory" data-type="factory">Factory ($500)</button>
+        </div>
+    </div>
+    
+    <div id="message-box"></div>
+    
+    <div id="modal-container">
+        <div id="modal-content">
+            <h2 id="modal-title"></h2>
+            <p id="modal-message"></p>
+            <button id="modal-close" class="modal-button">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const statsPanel = document.getElementById('stats-panel');
+    const powerGeneratedEl = document.getElementById('powerGenerated');
+    const powerDemandEl = document.getElementById('powerDemand');
+    const budgetEl = document.getElementById('budget');
+    const pollutionEl = document.getElementById('pollution');
+    const populationCountEl = document.getElementById('populationCount');
+    const controlsPanel = document.getElementById('controls-panel');
+    const messageBox = document.getElementById('message-box');
+    const modalContainer = document.getElementById('modal-container');
+    const modalTitleEl = document.getElementById('modal-title');
+    const modalMessageEl = document.getElementById('modal-message');
+    const modalCloseButton = document.getElementById('modal-close');
+
+    const GAME_LOOP_INTERVAL = 1000;
+    const POWER_LINE_COST = 10;
+    const POWER_LINE_MAX_LENGTH_SQ = 100 * 100; // 100 pixels squared
+    const EVENTS = {
+        STORM: { name: "Storm", message: "A storm hits! Wind turbines are producing at maximum capacity, but solar power is down.", effect: 'wind' },
+        HEATWAVE: { name: "Heatwave", message: "A heatwave increases power demand as everyone turns on their AC!", effect: 'demand' },
+        DROUGHT: { name: "Drought", message: "A severe drought has reduced the output of hydroelectric dams!", effect: 'hydro' },
+        INNOVATION: { name: "Innovation", message: "A new smart grid innovation boosts efficiency across the network!", effect: 'efficiency' }
+    };
+    
+    const COLORS = {
+        POWER_LINE: '#ffffff',
+        POLLUTION: '#555555',
+        POWER_FLOW: '#00ffc8'
+    };
+
+    let assets = {
+        coal: {
+            icon: '🏭',
+            cost: 500,
+            power: 100,
+            pollution: 0.1,
+            color: '#3b3b3b'
+        },
+        solar: {
+            icon: '☀️',
+            cost: 300,
+            power: 50,
+            pollution: 0,
+            color: '#f7d73b'
+        },
+        wind: {
+            icon: '🌬️',
+            cost: 300,
+            power: 60,
+            pollution: 0,
+            color: '#b3e6ff'
+        },
+        nuclear: {
+            icon: '☢️',
+            cost: 1500,
+            power: 500,
+            pollution: 0.01,
+            color: '#d8c3e0'
+        },
+        hydro: {
+            icon: '💧',
+            cost: 2000,
+            power: 300,
+            pollution: 0,
+            color: '#00bcd4'
+        },
+        home: {
+            icon: '🏠',
+            cost: 100,
+            demand: 10,
+            population: 4,
+            color: '#3498db'
+        },
+        school: {
+            icon: '🏫',
+            cost: 250,
+            demand: 20,
+            population: 100,
+            color: '#9b59b6'
+        },
+        factory: {
+            icon: '🏭',
+            cost: 500,
+            demand: 50,
+            population: 20,
+            color: '#e67e22'
+        }
+    };
+
+    let gameState = {
+        powerPlants: [],
+        consumers: [],
+        powerLines: [],
+        budget: 2000,
+        pollution: 0,
+        pollutionTick: 0,
+        powerFlowAnims: [],
+        currentPlacement: 'line',
+        lineStart: null,
+        event: null
+    };
+
+    let lastMousePos = { x: 0, y: 0 };
+    let gameLoop;
+    let timeSinceLastEvent = 0;
+
+    // Utility Functions
+    function showMessage(msg, type = 'info') {
+        messageBox.textContent = msg;
+        messageBox.style.backgroundColor = type === 'error' ? 'var(--error-color)' : type === 'success' ? 'var(--success-color)' : 'rgba(0,0,0,0.7)';
+        messageBox.style.display = 'block';
+        clearTimeout(messageBox.timeout);
+        messageBox.timeout = setTimeout(() => {
+            messageBox.style.display = 'none';
+        }, 3000);
+    }
+    
+    function showModal(title, message, onClose = () => {}) {
+        modalTitleEl.textContent = title;
+        modalMessageEl.textContent = message;
+        modalContainer.style.display = 'flex';
+        modalCloseButton.onclick = () => {
+            modalContainer.style.display = 'none';
+            onClose();
+        };
+    }
+
+    // Game Logic
+    function calculateStats() {
+        let totalGenerated = 0;
+        let totalDemand = 0;
+        let totalPollution = 0;
+        let totalPopulation = 0;
+        let powerGeneratedByPlant = {};
+        
+        // Calculate power generated and pollution
+        gameState.powerPlants.forEach(plant => {
+            let power = plant.power;
+            let pollution = plant.pollution;
+            
+            // Apply event effects
+            if (gameState.event) {
+                if (gameState.event.effect === 'wind' && plant.type === 'wind') {
+                    power *= 1.5; // Wind turbines overproduce
+                } else if (gameState.event.effect === 'hydro' && plant.type === 'hydro') {
+                    power *= 0.5; // Hydro dams underproduce
+                } else if (gameState.event.effect === 'efficiency') {
+                    power *= 1.1; // Innovation boosts power
+                }
+                if (gameState.event.effect === 'heatwave') {
+                    totalDemand *= 1.2;
+                }
+            }
+
+            totalGenerated += power;
+            totalPollution += pollution;
+            powerGeneratedByPlant[plant.id] = power;
+        });
+
+        // Calculate power demand and population
+        gameState.consumers.forEach(consumer => {
+            totalDemand += consumer.demand;
+            totalPopulation += consumer.population;
+        });
+        
+        // Distribute power and check for blackouts
+        let remainingPower = totalGenerated;
+        let connectedConsumers = new Set();
+        let connectedPlants = new Set();
+
+        gameState.powerPlants.forEach(plant => {
+            // Check if plant is connected
+            const connected = gameState.powerLines.some(line => line.from.id === plant.id || line.to.id === plant.id);
+            if (connected) {
+                connectedPlants.add(plant.id);
+            }
+        });
+
+        // Simple BFS to find connected consumers
+        const queue = [...connectedPlants].map(id => gameState.powerPlants.find(p => p.id === id));
+        const visited = new Set(queue.map(p => p.id));
+        
+        while(queue.length > 0) {
+            const current = queue.shift();
+            gameState.powerLines.forEach(line => {
+                let neighbor = null;
+                if (line.from.id === current.id && !visited.has(line.to.id)) {
+                    neighbor = line.to;
+                } else if (line.to.id === current.id && !visited.has(line.from.id)) {
+                    neighbor = line.from;
+                }
+                
+                if (neighbor) {
+                    visited.add(neighbor.id);
+                    queue.push(neighbor);
+                    if (neighbor.type in assets && assets[neighbor.type].demand) {
+                        connectedConsumers.add(neighbor.id);
+                    }
+                }
+            });
+        }
+        
+        let connectedDemand = 0;
+        gameState.consumers.forEach(consumer => {
+            if (connectedConsumers.has(consumer.id)) {
+                connectedDemand += consumer.demand;
+                consumer.isPowered = true;
+            } else {
+                consumer.isPowered = false;
+            }
+        });
+        
+        let blackoutCount = totalDemand - connectedDemand;
+        let powerRatio = totalGenerated / connectedDemand;
+        if (powerRatio > 1) {
+            // Surplus, power is flowing
+            powerRatio = 1;
+        }
+
+        // Update stats
+        powerGeneratedEl.textContent = `${Math.round(totalGenerated)} MW`;
+        powerDemandEl.textContent = `${Math.round(connectedDemand)} MW`;
+        budgetEl.textContent = `$${Math.round(gameState.budget)}`;
+        pollutionEl.textContent = `${Math.round(gameState.pollution * 100)}%`;
+        populationCountEl.textContent = `${totalPopulation}`;
+
+        // Update pollution
+        gameState.pollutionTick += totalPollution * (connectedDemand > 0 ? 1 : 0.5);
+        if (gameState.pollutionTick >= 1) {
+            gameState.pollution += Math.floor(gameState.pollutionTick);
+            gameState.pollutionTick -= Math.floor(gameState.pollutionTick);
+        }
+        
+        // Handle blackouts
+        if (totalGenerated < connectedDemand) {
+            showMessage("Rolling Blackout! Demand exceeds supply.", "error");
+            gameState.budget -= (connectedDemand - totalGenerated) / 10;
+        } else {
+            gameState.budget += (totalGenerated - connectedDemand) / 10;
+        }
+
+        // Update power flow animations
+        gameState.powerFlowAnims = [];
+        gameState.powerLines.forEach(line => {
+            const isPowered = (line.from.type in assets && assets[line.from.type].power && connectedPlants.has(line.from.id)) ||
+                             (line.to.type in assets && assets[line.to.type].power && connectedPlants.has(line.to.id));
+            if (isPowered) {
+                gameState.powerFlowAnims.push({
+                    line: line,
+                    pos: 0
+                });
+            }
+        });
+    }
+
+    function handleEvents() {
+        timeSinceLastEvent++;
+        if (timeSinceLastEvent >= 60) {
+            // 60 seconds is a random interval. Adjust as needed.
+            const eventKeys = Object.keys(EVENTS);
+            const randomEventKey = eventKeys[Math.floor(Math.random() * eventKeys.length)];
+            gameState.event = EVENTS[randomEventKey];
+            showMessage(gameState.event.message, 'info');
+            timeSinceLastEvent = 0;
+            
+            if (gameState.event.effect === 'heatwave') {
+                const heatwaveDuration = 20; // 20 game ticks
+                let heatwaveCounter = heatwaveDuration;
+                const heatwaveInterval = setInterval(() => {
+                    heatwaveCounter--;
+                    if (heatwaveCounter <= 0) {
+                        gameState.event = null;
+                        clearInterval(heatwaveInterval);
+                    }
+                }, GAME_LOOP_INTERVAL);
+            }
+        }
+    }
+
+    // Drawing Functions
+    function drawGrid() {
+        ctx.strokeStyle = '#222';
+        ctx.lineWidth = 0.5;
+        for (let x = 0; x < canvas.width; x += 20) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x, canvas.height);
+            ctx.stroke();
+        }
+        for (let y = 0; y < canvas.height; y += 20) {
+            ctx.beginPath();
+            ctx.moveTo(0, y);
+            ctx.lineTo(canvas.width, y);
+            ctx.stroke();
+        }
+    }
+
+    function drawPollution() {
+        if (gameState.pollution > 0) {
+            const pollutionHeight = canvas.height * (gameState.pollution / 200);
+            const pollutionColor = `rgba(100, 100, 100, ${Math.min(0.5, gameState.pollution / 200)})`;
+            ctx.fillStyle = pollutionColor;
+            ctx.fillRect(0, canvas.height - pollutionHeight, canvas.width, pollutionHeight);
+        }
+    }
+
+    function drawBuildings() {
+        gameState.powerPlants.forEach(plant => {
+            ctx.fillStyle = plant.color;
+            ctx.beginPath();
+            ctx.arc(plant.x, plant.y, 15, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = 'white';
+            ctx.font = '24px Inter';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(plant.icon, plant.x, plant.y);
+        });
+
+        gameState.consumers.forEach(consumer => {
+            ctx.fillStyle = consumer.isPowered ? consumer.color : '#555';
+            ctx.beginPath();
+            ctx.arc(consumer.x, consumer.y, 15, 0, Math.PI * 2);
+            ctx.fill();
+            
+            ctx.fillStyle = consumer.isPowered ? 'white' : '#ccc';
+            ctx.font = '24px Inter';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(consumer.icon, consumer.x, consumer.y);
+        });
+    }
+
+    function drawLines() {
+        ctx.strokeStyle = COLORS.POWER_LINE;
+        ctx.lineWidth = 3;
+        gameState.powerLines.forEach(line => {
+            ctx.beginPath();
+            ctx.moveTo(line.from.x, line.from.y);
+            ctx.lineTo(line.to.x, line.to.y);
+            ctx.stroke();
+        });
+    }
+
+    function drawPowerFlow() {
+        ctx.lineWidth = 4;
+        gameState.powerFlowAnims.forEach(anim => {
+            const line = anim.line;
+            const dx = line.to.x - line.from.x;
+            const dy = line.to.y - line.from.y;
+            
+            const segmentStart = anim.pos;
+            const segmentEnd = anim.pos + 0.1;
+            
+            ctx.strokeStyle = COLORS.POWER_FLOW;
+            ctx.beginPath();
+            ctx.moveTo(line.from.x + dx * segmentStart, line.from.y + dy * segmentStart);
+            ctx.lineTo(line.from.x + dx * segmentEnd, line.from.y + dy * segmentEnd);
+            ctx.stroke();
+            
+            anim.pos += 0.02;
+            if (anim.pos >= 1) {
+                anim.pos = 0;
+            }
+        });
+    }
+    
+    function drawPreview() {
+        if (gameState.currentPlacement && gameState.currentPlacement !== 'line') {
+            const asset = assets[gameState.currentPlacement];
+            if (asset) {
+                ctx.fillStyle = asset.color;
+                ctx.beginPath();
+                ctx.arc(lastMousePos.x, lastMousePos.y, 15, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = 'white';
+                ctx.font = '24px Inter';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(asset.icon, lastMousePos.x, lastMousePos.y);
+            }
+        }
+    }
+    
+    function drawLinePreview() {
+        if (gameState.currentPlacement === 'line' && gameState.lineStart) {
+            ctx.strokeStyle = COLORS.POWER_LINE;
+            ctx.lineWidth = 3;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(gameState.lineStart.x, gameState.lineStart.y);
+            ctx.lineTo(lastMousePos.x, lastMousePos.y);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+    }
+
+    // Main Game Loop
+    function gameLoopTick() {
+        calculateStats();
+        handleEvents();
+        draw();
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawGrid();
+        drawPollution();
+        drawLines();
+        drawBuildings();
+        drawPowerFlow();
+        drawPreview();
+        drawLinePreview();
+        requestAnimationFrame(draw);
+    }
+
+    // Event Listeners
+    controlsPanel.addEventListener('click', (e) => {
+        const target = e.target.closest('.control-button');
+        if (!target) return;
+        
+        controlsPanel.querySelectorAll('.control-button').forEach(btn => btn.classList.remove('active'));
+        target.classList.add('active');
+        gameState.currentPlacement = target.dataset.type;
+        gameState.lineStart = null;
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        lastMousePos.x = e.clientX - rect.left;
+        lastMousePos.y = e.clientY - rect.top;
+    });
+
+    canvas.addEventListener('click', (e) => {
+        const clickPos = { x: e.offsetX, y: e.offsetY };
+        
+        if (gameState.currentPlacement === 'line') {
+            const hit = findHit(clickPos);
+            if (hit) {
+                if (!gameState.lineStart) {
+                    gameState.lineStart = hit;
+                    showMessage("Click another building to complete the power line.");
+                } else {
+                    const distSq = (gameState.lineStart.x - hit.x)**2 + (gameState.lineStart.y - hit.y)**2;
+                    if (distSq > POWER_LINE_MAX_LENGTH_SQ) {
+                        showMessage("Power line is too long!", "error");
+                        gameState.lineStart = null;
+                        return;
+                    }
+                    if (gameState.lineStart === hit) {
+                        showMessage("Cannot connect a building to itself.", "error");
+                        gameState.lineStart = null;
+                        return;
+                    }
+                    if (isLineDuplicate(gameState.lineStart, hit)) {
+                        showMessage("A line already exists between these buildings.", "error");
+                        gameState.lineStart = null;
+                        return;
+                    }
+                    
+                    const lineCost = Math.ceil(Math.sqrt(distSq) / 10) * POWER_LINE_COST;
+                    if (gameState.budget >= lineCost) {
+                        gameState.budget -= lineCost;
+                        gameState.powerLines.push({ from: gameState.lineStart, to: hit });
+                        gameState.lineStart = null;
+                        showMessage(`Power line built! Cost: $${lineCost}`, "success");
+                    } else {
+                        showMessage("Not enough budget to build this line.", "error");
+                        gameState.lineStart = null;
+                    }
+                }
+            } else {
+                gameState.lineStart = null;
+            }
+        } else {
+            const asset = assets[gameState.currentPlacement];
+            if (!asset) return;
+            
+            if (gameState.budget >= asset.cost) {
+                gameState.budget -= asset.cost;
+                const newAsset = {
+                    id: Date.now() + Math.random(),
+                    x: clickPos.x,
+                    y: clickPos.y,
+                    type: gameState.currentPlacement,
+                    color: asset.color,
+                    icon: asset.icon,
+                    isPowered: false,
+                    ...asset // Spread all properties
+                };
+                
+                if (asset.power) {
+                    gameState.powerPlants.push(newAsset);
+                } else {
+                    gameState.consumers.push(newAsset);
+                }
+                
+                showMessage(`${asset.icon} ${gameState.currentPlacement} built for $${asset.cost}!`, "success");
+            } else {
+                showMessage(`Not enough budget to build ${gameState.currentPlacement}. Needs $${asset.cost}`, "error");
+            }
+        }
+    });
+
+    function isLineDuplicate(nodeA, nodeB) {
+        return gameState.powerLines.some(line => {
+            return (line.from.id === nodeA.id && line.to.id === nodeB.id) ||
+                   (line.from.id === nodeB.id && line.to.id === nodeA.id);
+        });
+    }
+    
+    function findHit(pos) {
+        const allBuildings = [...gameState.powerPlants, ...gameState.consumers];
+        for (const building of allBuildings) {
+            const distSq = (building.x - pos.x)**2 + (building.y - pos.y)**2;
+            if (distSq <= 15 * 15) {
+                return building;
+            }
+        }
+        return null;
+    }
+    
+    function init() {
+        canvas.width = window.innerWidth * 0.8;
+        canvas.height = window.innerHeight * 0.7;
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth * 0.8;
+            canvas.height = window.innerHeight * 0.7;
+            draw();
+        });
+        
+        // Initial welcome modal
+        showModal(
+            "Welcome to Power Grid Guardians!",
+            "Supply electricity to homes, schools, and industries. Build power plants and connect them with power lines to meet demand. Balance budget, pollution, and public satisfaction. Good luck, Guardian!"
+        );
+
+        gameLoop = setInterval(gameLoopTick, GAME_LOOP_INTERVAL);
+        draw();
+    }
+
+    window.onload = init;
+
+</script>
+</body>
+</html>

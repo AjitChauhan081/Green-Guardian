@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splash Saver</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f9ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+        .game-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+        }
+        canvas {
+            background-color: #c9e0f3;
+            border-radius: 15px;
+            touch-action: none;
+            border: 3px solid #1a5276;
+            cursor: pointer;
+        }
+        .feedback-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #1a5276;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            animation: fade-out 1.5s forwards;
+            opacity: 0;
+            pointer-events: none;
+        }
+        @keyframes fade-out {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.5); }
+        }
+        .rounded-button {
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .rounded-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        .rounded-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-blue-50 flex items-center justify-center min-h-screen p-4">
+
+<div class="game-container">
+    <!-- Game Title and UI -->
+      <a href="{% url 'home' %}" class="mt-6 inline-block text-green-700 font-semibold hover:underline">← Back to Dashboard</a>
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-blue-900 mb-2 text-center">
+        Splash Saver
+    </h1>
+    <p class="text-sm sm:text-base text-gray-600 mb-4 text-center">
+        Tap on the leaky faucets to fix them before the water meter fills up!
+    </p>
+
+    <div id="game-info" class="w-full flex justify-between items-center mb-4 text-blue-800 font-bold px-2 sm:px-4">
+        <div class="text-lg">Score: <span id="score-value">0</span></div>
+        <div class="text-lg">Time: <span id="time-value">0</span>s</div>
+    </div>
+    <div id="high-score-display" class="w-full text-center text-blue-800 font-bold mb-4 px-2 sm:px-4">
+        High Score: <span id="high-score-value">0</span>
+    </div>
+
+    <!-- Canvas for the game -->
+    <div id="canvas-container" class="relative w-full aspect-video max-h-[calc(100vh-250px)]">
+        <canvas id="gameCanvas" class="w-full h-full"></canvas>
+    </div>
+
+    <!-- UI elements for menu and game over screen -->
+    <div id="start-menu" class="absolute inset-0 bg-white bg-opacity-80 flex flex-col items-center justify-center rounded-2xl transition-opacity duration-300">
+        <h2 class="text-3xl font-extrabold text-blue-900 mb-4">Ready to Play?</h2>
+        <button id="startButton" class="rounded-full bg-blue-500 text-white text-lg sm:text-xl font-bold px-8 py-3 transition-colors hover:bg-blue-600 rounded-button">
+            Start Game
+        </button>
+    </div>
+
+    <div id="game-over-menu" class="absolute inset-0 bg-white bg-opacity-80 flex-col items-center justify-center hidden rounded-2xl transition-opacity duration-300">
+        <h2 class="text-4xl font-extrabold text-blue-900 mb-4">Game Over!</h2>
+        <p class="text-xl sm:text-2xl text-gray-700 mb-4">Final Score: <span id="final-score-value">0</span></p>
+        <button id="restartButton" class="rounded-full bg-green-500 text-white text-lg sm:text-xl font-bold px-8 py-3 transition-colors hover:bg-green-600 rounded-button">
+            Play Again
+        </button>
+    </div>
+    <div id="user-id-display" class="mt-4 text-xs text-gray-400 text-center w-full break-words px-2">
+        User ID: <span id="user-id-value">Loading...</span>
+    </div>
+</div>
+
+<!-- Firebase SDKs and Game Script -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    setLogLevel('debug'); // Enable debug logging for Firestore
+
+    // Global variables provided by the environment
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+    const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+    let app;
+    let auth;
+    let db;
+    let userId;
+
+    let highscore = 0;
+
+    // Initialize Firebase and Auth
+    function initFirebase() {
+        if (Object.keys(firebaseConfig).length > 0) {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    userId = user.uid;
+                    document.getElementById('user-id-value').textContent = userId;
+                    await setupFirestoreListener();
+                } else {
+                    console.log("No user signed in. Attempting anonymous sign-in.");
+                    try {
+                        if (initialAuthToken) {
+                            await signInWithCustomToken(auth, initialAuthToken);
+                        } else {
+                            await signInAnonymously(auth);
+                        }
+                    } catch (error) {
+                        console.error("Firebase Auth Error:", error);
+                        // A custom modal for error messages would go here instead of alert()
+                    }
+                }
+            });
+        } else {
+            console.error("Firebase config is not available. High scores will not be saved.");
+        }
+    }
+
+    async function setupFirestoreListener() {
+        if (!db || !userId) {
+            console.log("Firestore or user not ready, skipping listener setup.");
+            return;
+        }
+        const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/scores`, "water_saver_highscores");
+        onSnapshot(userDocRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                highscore = data.score || 0;
+                document.getElementById('high-score-value').textContent = highscore;
+            } else {
+                console.log("No high score found for user, setting to 0.");
+                highscore = 0;
+            }
+        });
+    }
+
+    async function saveHighscore() {
+        if (!db || !userId) {
+            console.error("Firestore not initialized or user not authenticated. Cannot save high score.");
+            return;
+        }
+
+        const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/scores`, "water_saver_highscores");
+        try {
+            await setDoc(userDocRef, { score: highscore }, { merge: true });
+            console.log("High score saved successfully!");
+        } catch (error) {
+            console.error("Error saving high score:", error);
+        }
+    }
+
+    // --- Game Logic ---
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const startMenu = document.getElementById('start-menu');
+    const gameOverMenu = document.getElementById('game-over-menu');
+    const scoreValue = document.getElementById('score-value');
+    const timeValue = document.getElementById('time-value');
+    const finalScoreValue = document.getElementById('final-score-value');
+
+    let gameLoop;
+    let leakyFaucets = [];
+    let score = 0;
+    let gameTime = 60;
+    let waterLevel = 0;
+    let timerId;
+    let lastTime = 0;
+    let difficulty = 1;
+
+    const FAUCET_SIZE = 60;
+    const DROP_SIZE = 10;
+    const MAX_WATER_LEVEL = 100;
+    const WATER_LEVEL_Y = 20;
+
+    class Faucet {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.isLeaking = true;
+            this.drops = [];
+            this.leakRate = 2000 - (difficulty * 100); // Faster leaking as difficulty increases
+            this.lastLeak = 0;
+            this.emoji = '🚰'; // Faucet emoji
+        }
+
+        draw() {
+            ctx.fillStyle = '#6a8dbf';
+            ctx.fillRect(this.x, this.y, FAUCET_SIZE, FAUCET_SIZE);
+            ctx.fillStyle = 'white';
+            ctx.font = `${FAUCET_SIZE}px sans-serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(this.emoji, this.x + FAUCET_SIZE / 2, this.y + FAUCET_SIZE / 2);
+        }
+
+        update(timestamp) {
+            if (this.isLeaking && timestamp - this.lastLeak > this.leakRate) {
+                this.drops.push({
+                    x: this.x + FAUCET_SIZE / 2,
+                    y: this.y + FAUCET_SIZE
+                });
+                this.lastLeak = timestamp;
+            }
+            this.drops.forEach(drop => drop.y += 2);
+            this.drops = this.drops.filter(drop => drop.y < canvas.height - WATER_LEVEL_Y);
+        }
+
+        drawDrops() {
+            ctx.fillStyle = '#4a90e2';
+            this.drops.forEach(drop => {
+                ctx.beginPath();
+                ctx.arc(drop.x, drop.y, DROP_SIZE, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+    }
+
+    const drawWaterMeter = () => {
+        const meterHeight = canvas.height - 2 * WATER_LEVEL_Y;
+        const fillHeight = waterLevel / MAX_WATER_LEVEL * meterHeight;
+
+        ctx.strokeStyle = '#1a5276';
+        ctx.lineWidth = 5;
+        ctx.strokeRect(10, WATER_LEVEL_Y, 20, meterHeight);
+
+        const gradient = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - fillHeight);
+        gradient.addColorStop(0, '#4a90e2');
+        gradient.addColorStop(1, '#a0c7ed');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(10, canvas.height - fillHeight - WATER_LEVEL_Y, 20, fillHeight);
+    };
+
+    const createFaucet = () => {
+        if (leakyFaucets.length < 5) {
+            const x = 50 + Math.random() * (canvas.width - FAUCET_SIZE - 100);
+            const y = 50 + Math.random() * (canvas.height / 2 - FAUCET_SIZE - 50);
+            leakyFaucets.push(new Faucet(x, y));
+        }
+    };
+
+    const displayFeedback = (isCorrect) => {
+        const message = document.createElement('div');
+        message.className = 'feedback-message';
+        message.textContent = isCorrect ? 'Fixed! ✅' : 'Game Over!';
+        message.style.color = isCorrect ? '#28a745' : '#dc3545';
+        document.getElementById('canvas-container').appendChild(message);
+        setTimeout(() => message.remove(), 1500);
+    };
+
+    const getMousePos = (event) => {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+        const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+        return {
+            x: clientX - rect.left,
+            y: clientY - rect.top
+        };
+    };
+
+    const handleTap = (event) => {
+        const pos = getMousePos(event);
+        leakyFaucets.forEach(faucet => {
+            if (pos.x > faucet.x && pos.x < faucet.x + FAUCET_SIZE &&
+                pos.y > faucet.y && pos.y < faucet.y + FAUCET_SIZE && faucet.isLeaking) {
+                faucet.isLeaking = false;
+                score += 10;
+                displayFeedback(true);
+                // Remove the fixed faucet
+                leakyFaucets = leakyFaucets.filter(f => f !== faucet);
+            }
+        });
+    };
+
+    const startGame = () => {
+        score = 0;
+        gameTime = 60;
+        waterLevel = 0;
+        leakyFaucets = [];
+        difficulty = 1;
+        startMenu.classList.add('hidden');
+        gameOverMenu.classList.add('hidden');
+        document.getElementById('start-menu').style.display = 'none';
+        document.getElementById('game-over-menu').style.display = 'none';
+
+        timerId = setInterval(() => {
+            gameTime--;
+            timeValue.textContent = gameTime;
+            if (gameTime <= 0) {
+                endGame();
+            }
+        }, 1000);
+
+        requestAnimationFrame(animate);
+    };
+
+    const endGame = () => {
+        cancelAnimationFrame(gameLoop);
+        clearInterval(timerId);
+        finalScoreValue.textContent = score;
+        document.getElementById('game-over-menu').style.display = 'flex';
+
+        if (score > highscore) {
+            highscore = score;
+            document.getElementById('high-score-value').textContent = highscore;
+            if (db && userId) {
+                saveHighscore();
+            } else {
+                 console.log("Not saving new high score as Firestore is not ready.");
+            }
+        }
+    };
+
+    // Main game loop
+    const animate = (timestamp) => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Check water level
+        if (waterLevel >= MAX_WATER_LEVEL) {
+            endGame();
+            return;
+        }
+
+        // Spawn new faucet
+        if (timestamp - lastTime > 3000 - (difficulty * 200)) {
+            createFaucet();
+            lastTime = timestamp;
+        }
+
+        // Update and draw faucets
+        leakyFaucets.forEach(faucet => {
+            faucet.update(timestamp);
+            faucet.draw();
+            faucet.drawDrops();
+            waterLevel += faucet.drops.length * 0.005; // Increase water level
+        });
+
+        // Update UI
+        drawWaterMeter();
+        scoreValue.textContent = score;
+        timeValue.textContent = gameTime;
+
+        // Increase difficulty every 10 points
+        difficulty = Math.floor(score / 20) + 1;
+
+        gameLoop = requestAnimationFrame(animate);
+    };
+
+    // Event Listeners for UI and Game
+    document.getElementById('startButton').addEventListener('click', () => {
+        startGame();
+    });
+    document.getElementById('restartButton').addEventListener('click', () => {
+        startGame();
+    });
+
+    const resizeCanvas = () => {
+        const container = document.getElementById('canvas-container');
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
+        // Redraw content if needed
+    };
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Canvas Event Listeners for click/tap
+    canvas.addEventListener('click', handleTap);
+    canvas.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        handleTap(e);
+    });
+
+    window.onload = function() {
+        initFirebase();
+    };
+
+</script>
+</body>
+</html>

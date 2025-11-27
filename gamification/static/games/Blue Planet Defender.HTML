@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blue Planet Defender</title>
+  <style>
+    body {
+      background: #04376d;
+      color: #ffffff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    #container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #062d4b;
+      border-radius: 15px;
+      box-shadow: 0 4px 36px #0008;
+      padding: 32px 28px;
+    }
+    h1 { text-align: center; margin-bottom: 8px; font-size: 2.3rem; color: #32f0e3;}
+    #world-status { display: flex; justify-content: space-around; margin-bottom: 20px; flex-wrap: wrap;}
+    .status {background:#035463;padding:13px 17px;border-radius:9px;font-size:1.03rem;margin-bottom:8px;}
+    #scene {
+      background: linear-gradient(#0e80ac 80%, #2fa357 100%);
+      min-height: 220px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.24em;
+      font-weight: 500;
+      box-shadow: 0 1px 10px #05081177;
+      transition: background 0.7s;
+    }
+    #narrative {
+      background: #1a5ab9;
+      color: #f7f9fc;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 16px;
+      font-size: 1.07em;
+      min-height: 40px;
+      transition: background 0.8s;
+    }
+    #missions, #upgrades {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .mission, .upgrade {
+      background: #13b8ac;
+      border-radius: 7px;
+      padding: 14px;
+      width: 220px;
+      margin: 0 7px 12px 7px;
+      text-align: center;
+      color: #ffffff;
+      box-shadow: 0 2px 10px #02121444;
+    }
+    .upgrade-level {
+      display: block;
+      margin: 6px 0 0 0;
+      font-size: 0.95em;
+      color: #fffa8a;
+    }
+    button {
+      background: #fff61d;
+      color: #04376d;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      padding: 7px 13px;
+      font-size: 1rem;
+      margin-top: 8px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover { background: #ffe35a;}
+    #resetGame {
+      background: #1aff3d;
+      color: #062d4b;
+      border-radius: 6px;
+      margin: 17px auto 0 auto;
+      display: none;
+      font-size: 1.1em;
+      padding: 10px 18px;
+      font-weight: 700;
+      box-shadow: 0 1px 8px #05081144;
+      transition: background 0.25s;
+    }
+    #resetGame:hover { background: #22ff69;}
+    @media (max-width:960px) {
+      .mission, .upgrade {width:95vw;max-width:340px;}
+      #container {padding:20px 2vw;}
+    }
+  </style>
+</head>
+<body>
+   <a href="{% url 'home' %}" class="mt-6 inline-block text-green-700 font-semibold hover:underline">← Back to Dashboard</a>
+<div id="container">
+  <h1>Blue Planet Defender</h1>
+  <div id="world-status">
+    <div class="status">🌊 Ocean Health: <span id="oceanStat">100</span></div>
+    <div class="status">🌳 Forest Health: <span id="forestStat">100</span></div>
+    <div class="status">🐠 Reef Health: <span id="reefStat">100</span></div>
+    <div class="status">💧 Resources: <span id="resStat">300</span></div>
+  </div>
+  <div id="scene">The Earth is vibrant and thriving! 🐬🌲</div>
+  <div id="narrative">
+    Welcome, Eco-Defender! Each mission’s outcome shapes the fate of the blue planet.
+  </div>
+  <div id="missions">
+    <div class="mission">
+      <b>Ocean Mission</b><br>
+      <em>Skim Plastic • Block Oil</em><br>
+      <button onclick="doMission('ocean')">Start Mission</button>
+    </div>
+    <div class="mission">
+      <b>Forest Mission</b><br>
+      <em>Stop Logging • Fight Fires</em><br>
+      <button onclick="doMission('forest')">Start Mission</button>
+    </div>
+    <div class="mission">
+      <b>Coral Reef Mission</b><br>
+      <em>Restore Coral • Save Life</em><br>
+      <button onclick="doMission('reef')">Start Mission</button>
+    </div>
+  </div>
+  <div id="upgrades">
+    <div class="upgrade">
+      <b>Eco-Skimmer</b>
+      <div>Boost ocean cleanup power</div>
+      <button onclick="upgrade('skimmer')">Upgrade</button>
+      <span class="upgrade-level" id="skimmerLvl">Level 1</span>
+    </div>
+    <div class="upgrade">
+      <b>Solar Drone</b>
+      <div>Boost forest missions</div>
+      <button onclick="upgrade('drone')">Upgrade</button>
+      <span class="upgrade-level" id="droneLvl">Level 1</span>
+    </div>
+    <div class="upgrade">
+      <b>Coral Bot</b>
+      <div>Boost reef healing</div>
+      <button onclick="upgrade('coralbot')">Upgrade</button>
+      <span class="upgrade-level" id="coralbotLvl">Level 1</span>
+    </div>
+  </div>
+  <button id="resetGame" onclick="resetGame()">Restart Game</button>
+</div>
+<script>
+  let state = {
+    ocean: 100, forest: 100, reef: 100, resources: 300,
+    skimmer: 1, drone: 1, coralbot: 1,
+    alive: true
+  };
+
+  function clamp(val, min, max) {
+    return Math.max(min, Math.min(max, val));
+  }
+
+  function updateStats() {
+    document.getElementById('oceanStat').textContent = state.ocean;
+    document.getElementById('forestStat').textContent = state.forest;
+    document.getElementById('reefStat').textContent = state.reef;
+    document.getElementById('resStat').textContent = state.resources;
+    document.getElementById('skimmerLvl').textContent = "Level " + state.skimmer;
+    document.getElementById('droneLvl').textContent = "Level " + state.drone;
+    document.getElementById('coralbotLvl').textContent = "Level " + state.coralbot;
+    updateScene();
+    checkGameOver();
+  }
+
+  function updateScene() {
+    const scene = document.getElementById('scene');
+    let o = state.ocean, f = state.forest, r = state.reef;
+    let sum = o + f + r;
+    if(!state.alive) {
+      scene.style.background = "linear-gradient(#333 80%, #313131 100%)";
+      scene.textContent = "Environmental collapse! The blue planet fades to gray... 🛑";
+      document.getElementById('narrative').style.background = "#742e2e";
+      return;
+    }
+    if (o > 85 && f > 85 && r > 85) {
+      scene.style.background = "linear-gradient(#0e80ac 80%, #2fa357 100%)";
+      scene.textContent = "The Earth is vibrant and thriving! 🐬🌲";
+      document.getElementById('narrative').style.background = "#1a5ab9";
+    } else if (o < 35 || f < 35 || r < 35) {
+      scene.style.background = "linear-gradient(#56657a 80%, #4c2f29 100%)";
+      scene.textContent = "Despair looms: Oil slicks, fading reefs, scorched forests... 💀";
+      document.getElementById('narrative').style.background = "#744c4c";
+    } else if (sum/3 > 70) {
+      scene.style.background = "linear-gradient(#2b88a6 80%, #4cae73 100%)";
+      scene.textContent = "Life is returning—they thrive on your leadership!";
+      document.getElementById('narrative').style.background = "#1763a3";
+    } else if(sum/3 > 50) {
+      scene.style.background = "linear-gradient(#5999b3 80%, #4ab05e 100%)";
+      scene.textContent = "The world hangs in the balance. Act to restore hope! 🏞️";
+      document.getElementById('narrative').style.background = "#2486a6";
+    } else {
+      scene.style.background = "linear-gradient(#435e74 80%, #6c5b2a 100%)";
+      scene.textContent = "Warning: Ecosystems declining! Respond quickly.";
+      document.getElementById('narrative').style.background = "#886e37";
+    }
+  }
+
+  function checkGameOver() {
+    if(state.ocean <= 0 || state.forest <= 0 || state.reef <= 0 || state.resources <= 0) {
+      state.alive = false;
+      document.getElementById("narrative").textContent = "Game Over! Earth's systems collapse. Press Restart to try again.";
+      document.getElementById("resetGame").style.display = "block";
+      disableButtons(true);
+    }
+  }
+
+  function disableButtons(disable=true) {
+    let btns = document.querySelectorAll('#missions button, #upgrades button');
+    btns.forEach(btn=>btn.disabled=disable);
+  }
+
+  function resetGame() {
+    state = {
+      ocean: 100, forest: 100, reef: 100, resources: 300,
+      skimmer: 1, drone: 1, coralbot: 1,
+      alive: true
+    };
+    document.getElementById("resetGame").style.display = "none";
+    disableButtons(false);
+    updateStats();
+    document.getElementById("narrative").textContent =
+      "Welcome, Eco-Defender! Each mission’s outcome shapes the fate of the blue planet.";
+  }
+
+  function doMission(zone) {
+    if (!state.alive) return;
+    let msg = '';
+    if (zone == 'ocean') {
+      let clean = 14 + state.skimmer * 5;
+      let cost = 51;
+      if (state.resources < cost) {
+        msg = "Not enough resources! Skimmers stall and new spills spread.";
+        state.ocean = clamp(state.ocean - 8, 0, 100);
+      } else {
+        msg = "🛥️ Skimmers sweep plastic and contain oil—";
+        state.resources -= cost;
+        state.ocean = clamp(state.ocean + clean, 0, 100);
+        state.reef = clamp(state.reef + Math.floor(clean/5), 0, 100);
+        if (state.ocean > 90) msg += " Dolphin pods return, water sparkles!";
+        else msg += " Some wildlife saved, but more work remains.";
+        if (Math.random() < 0.24) { msg += " Turtle rescued! 🐢 (+10 resources)"; state.resources += 10;}
+      }
+    }
+    if (zone == 'forest') {
+      let heal = 11 + state.drone * 4;
+      let cost = 47;
+      if (state.resources < cost) {
+        msg = "Insufficient resources! Drones grounded and loggers advance.";
+        state.forest = clamp(state.forest - 8, 0, 100);
+      } else {
+        msg = "🚁 Solar drones repel illegal loggers, plant saplings, douse fires—";
+        state.resources -= cost;
+        state.forest = clamp(state.forest + heal, 0, 100);
+        if (Math.random() < 0.13) { msg += " Fire flares! Quick response averts disaster (-6 forests)"; state.forest = clamp(state.forest - 6, 0, 100);}
+        if (state.forest > 90) msg += " A chorus of birds fills the canopy!";
+        else msg += " Some habitats saved, but more remains.";
+        if (Math.random() < 0.19) { msg += " Rare orchid pollinated! (+9 resources)"; state.resources += 9;}
+      }
+    }
+    if (zone == 'reef') {
+      let heal = 9 + state.coralbot * 5;
+      let cost = 49;
+      if (state.resources < cost) {
+        msg = "Coralbots idle with no parts! Bleaching accelerates.";
+        state.reef = clamp(state.reef - 8, 0, 100);
+      } else {
+        msg = "🤿 Coralbots restore and clear reefs—";
+        state.resources -= cost;
+        state.reef = clamp(state.reef + heal, 0, 100);
+        state.ocean = clamp(state.ocean + Math.floor(heal/6), 0, 100);
+        if (state.reef > 90) msg += " Coral blooms vibrantly, fish schools swarm!";
+        else msg += " Partial recovery. More help needed.";
+        if (Math.random() < 0.19) { msg += " Seahorse colony rebounds! (+7 resources)"; state.resources += 7;}
+      }
+    }
+    document.getElementById('narrative').textContent = msg;
+    updateStats();
+  }
+
+  function upgrade(tool) {
+    if (!state.alive) return;
+    let cost, desc;
+    if (tool === 'skimmer') {
+      cost = 61 + state.skimmer * 18;
+      desc = "Eco-Skimmer upgraded! Increased cleaning.";
+      if(state.skimmer>=5) {desc="Eco-Skimmer already maxed!"; cost=9999;}
+      else if (state.resources < cost) {desc="Not enough resources to upgrade!";}
+      else {state.resources-=cost;state.skimmer++; }
+    }
+    if (tool === 'drone') {
+      cost = 59 + state.drone * 16;
+      desc = "Solar Drone upgraded! Increased forest defense.";
+      if(state.drone>=5){desc="Drone already maxed!";cost=9999;}
+      else if (state.resources<cost) {desc="Not enough resources to upgrade!";}
+      else{state.resources-=cost;state.drone++;}
+    }
+    if (tool === 'coralbot') {
+      cost = 53 + state.coralbot * 19;
+      desc = "Coral Bot upgraded! Faster reef healing.";
+      if(state.coralbot>=5){desc="Coral Bot already maxed!";cost=9999;}
+      else if (state.resources<cost) {desc="Not enough resources to upgrade!";}
+      else{state.resources-=cost;state.coralbot++;}
+    }
+    document.getElementById('narrative').textContent = desc;
+    updateStats();
+  }
+
+  updateStats();
+</script>
+</body>
+</html>

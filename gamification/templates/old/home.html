@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Greed Guardian</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#17cf17",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#112111",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-zinc-900 dark:text-zinc-200">
+<div class="relative flex h-auto min-h-screen w-full flex-col">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-primary/20 dark:border-primary/30 px-10 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M36.7273 44C33.9891 44 31.6043 39.8386 30.3636 33.69C29.123 39.8386 26.7382 44 24 44C21.2618 44 18.877 39.8386 17.6364 33.69C16.3957 39.8386 14.0109 44 11.2727 44C7.25611 44 4 35.0457 4 24C4 12.9543 7.25611 4 11.2727 4C14.0109 4 16.3957 8.16144 17.6364 14.31C18.877 8.16144 21.2618 4 24 4C26.7382 4 29.123 8.16144 30.3636 14.31C31.6043 8.16144 33.9891 4 36.7273 4C40.7439 4 44 12.9543 44 24C44 35.0457 40.7439 44 36.7273 44Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold text-zinc-900 dark:text-white">Greed Guardian</h2>
+</div>
+<div class="flex flex-1 items-center justify-end gap-8">
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary" href="#">About</a>
+<a class="text-sm font-medium hover:text-primary" href="#">Initiatives</a>
+<a class="text-sm font-medium hover:text-primary" href="#">Leaderboard</a>
+</nav>
+<div class="flex items-center gap-2">
+    <a class="truncate" href="{% url 'login' %}"><button class="flex items-center justify-center rounded-lg h-10 px-4 text-sm font-bold bg-primary text-zinc-900 hover:bg-primary/90">
+Login
+</button>
+</a>
+<a class="truncate" href="{% url 'signup' %}">
+<button class="flex items-center justify-center rounded-lg h-10 px-4 text-sm font-bold bg-zinc-200 text-zinc-900 hover:bg-zinc-300 dark:bg-zinc-800 dark:text-white dark:hover:bg-zinc-700">
+Sign Up
+</button></a>
+</div>
+</div>
+</header>
+<main class="flex-1">
+<section class="relative">
+<div class="absolute inset-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDjEWIe2W2DSuz70yo-xUJW7MrSto1jDEoRK3hk0USEMd1-HZeIhgF09N0VqFwaJr88AWxHVrF8DeJel5GbYiCR4O4O5DrnYUkFCyZIeBVhMTqF3oWF1qNgOqDi53R7V1OAK4z-WzzNpEU7rGUS8pfmIdqVG7AChQ_D4Vp4POrbOAkl_5TzC_8Kru5muTIUO9JieFXyLs5E7r9Tn5q_Pz2cph2azxOkMkrWTM_q7H4jPsmsXJdVnu1TLiRgZZdgpvK1aZj__ET-kTF4");'></div>
+<div class="absolute inset-0 bg-black/50 dark:bg-black/70"></div>
+<div class="relative min-h-[50vh] md:min-h-[60vh] flex flex-col items-center justify-center text-center p-4">
+<div class="flex flex-col gap-4 max-w-3xl">
+<h1 class="text-4xl md:text-6xl font-black text-white leading-tight tracking-tight">
+                                Protect Punjab, Play the Game
+                            </h1>
+<p class="text-base md:text-lg font-normal text-zinc-200">
+                                Join Greed Guardian and turn environmental action into an exciting adventure. Earn points, climb the leaderboard, and make a real impact on Punjab's green future.
+                            </p>
+</div>
+<button class="mt-8 flex items-center justify-center rounded-lg h-12 px-6 text-base font-bold bg-primary text-zinc-900 hover:bg-primary/90">
+<span class="truncate">Get Started</span>
+</button>
+</div>
+</section>
+<section class="py-16 px-4 md:px-10">
+<div class="max-w-5xl mx-auto">
+<div class="text-center mb-12">
+<h2 class="text-3xl md:text-4xl font-black text-zinc-900 dark:text-white tracking-tight">How It Works</h2>
+<p class="mt-4 text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
+                                Greed Guardian makes it easy and fun to contribute to a greener Punjab. Here's how you can get involved:
+                            </p>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+<div class="flex flex-col gap-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-background-light dark:bg-background-dark p-6 text-center items-center">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-primary/20 text-primary">
+<svg fill="currentColor" height="28" viewBox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M223.45,40.07a8,8,0,0,0-7.52-7.52C139.8,28.08,78.82,51,52.82,94a87.09,87.09,0,0,0-12.76,49c.57,15.92,5.21,32,13.79,47.85l-19.51,19.5a8,8,0,0,0,11.32,11.32l19.5-19.51C81,210.73,97.09,215.37,113,215.94q1.67.06,3.33.06A86.93,86.93,0,0,0,162,203.18C205,177.18,227.93,116.21,223.45,40.07ZM153.75,189.5c-22.75,13.78-49.68,14-76.71.77l88.63-88.62a8,8,0,0,0-11.32-11.32L65.73,179c-13.19-27-13-54,.77-76.71,22.09-36.47,74.6-56.44,141.31-54.06C210.2,114.89,190.22,167.41,153.75,189.5Z"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-lg font-bold text-zinc-900 dark:text-white">Take Action</h3>
+<p class="text-sm text-zinc-600 dark:text-zinc-400">Participate in environmental initiatives across Punjab, from tree planting to waste reduction.</p>
+</div>
+</div>
+<div class="flex flex-col gap-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-background-light dark:bg-background-dark p-6 text-center items-center">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-primary/20 text-primary">
+<svg fill="currentColor" height="28" viewBox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M232,64H208V56a16,16,0,0,0-16-16H64A16,16,0,0,0,48,56v8H24A16,16,0,0,0,8,80V96a40,40,0,0,0,40,40h3.65A80.13,80.13,0,0,0,120,191.61V216H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16H136V191.58c31.94-3.23,58.44-25.64,68.08-55.58H208a40,40,0,0,0,40-40V80A16,16,0,0,0,232,64ZM48,120A24,24,0,0,1,24,96V80H48v32q0,4,.39,8Zm144-8.9c0,35.52-28.49,64.64-63.51,64.9H128a64,64,0,0,1-64-64V56H192ZM232,96a24,24,0,0,1-24,24h-.5a81.81,81.81,0,0,0,.5-8.9V80h24Z"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-lg font-bold text-zinc-900 dark:text-white">Earn Rewards</h3>
+<p class="text-sm text-zinc-600 dark:text-zinc-400">Earn points for every action you take, unlocking badges and virtual rewards.</p>
+</div>
+</div>
+<div class="flex flex-col gap-4 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-background-light dark:bg-background-dark p-6 text-center items-center">
+<div class="w-12 h-12 flex items-center justify-center rounded-full bg-primary/20 text-primary">
+<svg fill="currentColor" height="28" viewBox="0 0 256 256" width="28" xmlns="http://www.w3.org/2000/svg">
+<path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-1">
+<h3 class="text-lg font-bold text-zinc-900 dark:text-white">Compete &amp; Connect</h3>
+<p class="text-sm text-zinc-600 dark:text-zinc-400">Track your progress on the leaderboard, challenge friends, and celebrate collective achievements.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</div>
+
+</body></html>

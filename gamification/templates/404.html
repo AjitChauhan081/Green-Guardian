@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found - 404</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+  <div class="text-center px-6">
+    <h1 class="text-9xl font-extrabold text-green-700 animate-bounce">404</h1>
+    <h2 class="text-3xl font-bold text-gray-800 mt-4">Oops! Page Not Found</h2>
+    <p class="text-gray-600 mt-2 mb-6">The page you’re looking for does not exist or has been moved.</p>
+    <a href="{% url 'home' %}" class="bg-green-700 text-white px-6 py-3 rounded-lg hover:bg-green-800 transition">
+      ← Back to Dashboard
+    </a>
+  </div>
+</body>
+</html>

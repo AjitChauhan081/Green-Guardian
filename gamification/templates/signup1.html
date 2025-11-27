@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - Green Guardian</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    function showFields() {
+      const role = document.getElementById("role").value;
+      document.getElementById("student-fields").style.display = (role === "school_student" || role === "college_student") ? "block" : "none";
+      document.getElementById("teacher-fields").style.display = (role === "school_teacher" || role === "college_teacher") ? "block" : "none";
+      document.getElementById("ngo-fields").style.display = (role === "ngo" || role === "government") ? "block" : "none";
+    }
+  </script>
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-3xl mx-auto mt-10 bg-white p-8 shadow rounded">
+    <h2 class="text-2xl font-bold text-center mb-6">Registration</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <!-- Role -->
+      <div class="mb-4">
+        <label class="block font-medium">Role</label>
+        <select id="role" name="role" onchange="showFields()" class="w-full border px-3 py-2 rounded" required>
+          <option value="">Select Role</option>
+          <option value="school_student">School Student</option>
+          <option value="college_student">College Student</option>
+          <option value="school_teacher">School Teacher</option>
+          <option value="college_teacher">College Teacher</option>
+          <option value="ngo">NGO</option>
+          <option value="government">Government</option>
+        </select>
+      </div>
+
+      <!-- Common fields -->
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block">First Name</label>
+          <input type="text" name="first_name" class="w-full border px-3 py-2 rounded" required>
+        </div>
+        <div>
+          <label class="block">Last Name</label>
+          <input type="text" name="last_name" class="w-full border px-3 py-2 rounded">
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <label class="block">Email</label>
+        <input type="email" name="email" class="w-full border px-3 py-2 rounded" required>
+      </div>
+
+      <div class="mt-4">
+        <label class="block">Contact No</label>
+        <input type="text" name="contact_no" class="w-full border px-3 py-2 rounded">
+      </div>
+
+      <div class="mt-4">
+        <label class="block">Gender</label>
+        <select name="gender" class="w-full border px-3 py-2 rounded">
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="mt-4">
+        <label class="block">DOB</label>
+        <input type="date" name="dob" class="w-full border px-3 py-2 rounded">
+      </div>
+
+      <div class="mt-4">
+        <label class="block">Username</label>
+        <input type="text" name="username" class="w-full border px-3 py-2 rounded" required>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 mt-4">
+        <div>
+          <label class="block">Password</label>
+          <input type="password" name="password1" minlength="8" class="w-full border px-3 py-2 rounded" required>
+        </div>
+        <div>
+          <label class="block">Confirm Password</label>
+          <input type="password" name="password2" minlength="8" class="w-full border px-3 py-2 rounded" required>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <label class="block">Address</label>
+        <textarea name="address" class="w-full border px-3 py-2 rounded"></textarea>
+      </div>
+
+      <!-- ================== STUDENT FIELDS ================== -->
+      <div id="student-fields" class="mt-6 hidden">
+        <h3 class="font-bold mb-2">Student Details</h3>
+
+        <label class="block">School/College Selection</label>
+        <input type="text" name="institution" placeholder="Select or Add Institution" class="w-full border px-3 py-2 rounded">
+
+        <div class="mt-4">
+          <label class="block">Enrollment No / Roll No</label>
+          <input type="text" name="enrollment_no" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div class="mt-4">
+          <label class="block">Grade (for school students)</label>
+          <input type="number" name="grade" min="1" max="12" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div class="mt-4">
+          <label class="block">Stream (if Grade > 10)</label>
+          <input type="text" name="stream" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div class="mt-4">
+          <label class="block">Current Year (College)</label>
+          <input type="number" name="current_year" min="1" max="5" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div class="mt-4">
+          <label class="block">Course</label>
+          <input type="text" name="course" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div class="mt-4">
+          <label class="block">Field of Study</label>
+          <input type="text" name="field_of_study" class="w-full border px-3 py-2 rounded">
+        </div>
+      </div>
+
+      <!-- ================== TEACHER FIELDS ================== -->
+      <div id="teacher-fields" class="mt-6 hidden">
+        <h3 class="font-bold mb-2">Teacher Details</h3>
+
+        <label class="block">School/College Selection</label>
+        <input type="text" name="institution" placeholder="Select or Add Institution" class="w-full border px-3 py-2 rounded">
+
+        <div class="mt-4">
+          <label class="block">Faculty ID / Teacher ID</label>
+          <input type="text" name="teacher_id" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div class="mt-4">
+          <label class="block">Designation</label>
+          <input type="text" name="designation" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div class="mt-4">
+          <label class="block">Department (College Teachers)</label>
+          <input type="text" name="department" class="w-full border px-3 py-2 rounded">
+        </div>
+      </div>
+
+      <!-- ================== NGO / GOVERNMENT FIELDS ================== -->
+      <div id="ngo-fields" class="mt-6 hidden">
+        <h3 class="font-bold mb-2">Organization Details</h3>
+
+        <div class="mt-4">
+          <label class="block">Organization Name</label>
+          <input type="text" name="org_name" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div class="mt-4">
+          <label class="block">Type</label>
+          <select name="org_type" class="w-full border px-3 py-2 rounded">
+            <option value="ngo">NGO</option>
+            <option value="government">Government</option>
+          </select>
+        </div>
+
+        <div class="mt-4">
+          <label class="block">Contact Person</label>
+          <input type="text" name="contact_person" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div class="mt-4">
+          <label class="block">Website</label>
+          <input type="url" name="website" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div class="mt-4">
+          <label class="block">State</label>
+          <input type="text" name="state" class="w-full border px-3 py-2 rounded">
+        </div>
+
+        <div class="mt-4">
+          <label class="block">City</label>
+          <input type="text" name="city" class="w-full border px-3 py-2 rounded">
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="mt-6">
+        <button type="submit" class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+          Register
+        </button>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

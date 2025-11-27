@@ -1,0 +1,3897 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>// Enhanced Application Data
+const appData = {
+  "students": [
+    {"id": 1, "name": "Alice Johnson", "photo": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%234CAF50'/%3E%3Ctext x='20' y='25' text-anchor='middle' fill='white' font-size='14'%3EAJ%3C/text%3E%3C/svg%3E", "rollNumber": "ST001", "class": "Grade 10A", "ecoPoints": 2450, "badges": 12, "level": 8, "completionRate": 85, "skillsMastered": 15, "performanceTrend": "improving", "recentActivity": "Completed Water Conservation Task", "lastActive": "2 hours ago", "engagementScore": 92, "loginStreak": 14},
+    {"id": 2, "name": "Bob Smith", "photo": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%232196F3'/%3E%3Ctext x='20' y='25' text-anchor='middle' fill='white' font-size='14'%3EBS%3C/text%3E%3C/svg%3E", "rollNumber": "ST002", "class": "Grade 10A", "ecoPoints": 1980, "badges": 8, "level": 6, "completionRate": 72, "skillsMastered": 11, "performanceTrend": "stable", "recentActivity": "Started Energy Efficiency Module", "lastActive": "1 day ago", "engagementScore": 78, "loginStreak": 7},
+    {"id": 3, "name": "Carol Davis", "photo": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23FF9800'/%3E%3Ctext x='20' y='25' text-anchor='middle' fill='white' font-size='14'%3ECD%3C/text%3E%3C/svg%3E", "rollNumber": "ST003", "class": "Grade 10B", "ecoPoints": 3210, "badges": 15, "level": 10, "completionRate": 92, "skillsMastered": 20, "performanceTrend": "excellent", "recentActivity": "Earned Eco Warrior Badge", "lastActive": "30 minutes ago", "engagementScore": 98, "loginStreak": 25},
+    {"id": 4, "name": "David Wilson", "photo": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%239C27B0'/%3E%3Ctext x='20' y='25' text-anchor='middle' fill='white' font-size='14'%3EDW%3C/text%3E%3C/svg%3E", "rollNumber": "ST004", "class": "Grade 9A", "ecoPoints": 1650, "badges": 6, "level": 5, "completionRate": 68, "skillsMastered": 8, "performanceTrend": "improving", "recentActivity": "Completed Beginner Quiz", "lastActive": "3 hours ago", "engagementScore": 73, "loginStreak": 12},
+    {"id": 5, "name": "Emma Brown", "photo": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%23E91E63'/%3E%3Ctext x='20' y='25' text-anchor='middle' fill='white' font-size='14'%3EEB%3C/text%3E%3C/svg%3E", "rollNumber": "ST005", "class": "Grade 9B", "ecoPoints": 2890, "badges": 11, "level": 9, "completionRate": 88, "skillsMastered": 17, "performanceTrend": "excellent", "recentActivity": "Mentored 3 peers", "lastActive": "1 hour ago", "engagementScore": 95, "loginStreak": 18}
+  ],
+  "categories": [
+    {"id": 1, "name": "Environmental Awareness", "levels": ["Beginner", "Intermediate", "Advanced"], "taskCount": 25, "skillTags": ["observation", "awareness", "analysis"], "status": "active"},
+    {"id": 2, "name": "Waste Management", "levels": ["Basic", "Intermediate", "Advanced", "Expert"], "taskCount": 35, "skillTags": ["sorting", "recycling", "reduction"], "status": "active"},
+    {"id": 3, "name": "Water Conservation", "levels": ["Basic", "Intermediate", "Advanced"], "taskCount": 30, "skillTags": ["conservation", "efficiency", "monitoring"], "status": "active"},
+    {"id": 4, "name": "Energy Efficiency", "levels": ["Beginner", "Intermediate", "Advanced", "Expert"], "taskCount": 28, "skillTags": ["renewable", "conservation", "technology"], "status": "active"},
+    {"id": 5, "name": "Climate Change", "levels": ["Basic", "Intermediate", "Advanced"], "taskCount": 22, "skillTags": ["understanding", "adaptation", "mitigation"], "status": "active"},
+    {"id": 6, "name": "Biodiversity", "levels": ["Basic", "Intermediate", "Advanced"], "taskCount": 20, "skillTags": ["species", "ecosystem", "conservation"], "status": "active"}
+  ],
+  "tasks": [
+    {"id": 1, "title": "Identify 5 Recyclable Items", "category": "Waste Management", "level": 1, "difficulty": "Basic", "timeLimit": 3, "pointValue": 50, "verificationType": "photo", "status": "active", "prerequisites": [], "skillTags": ["identification", "sorting"]},
+    {"id": 2, "title": "Create Water Usage Log", "category": "Water Conservation", "level": 1, "difficulty": "Basic", "timeLimit": 7, "pointValue": 75, "verificationType": "document", "status": "active", "prerequisites": [], "skillTags": ["monitoring", "awareness"]},
+    {"id": 3, "title": "Plant a Seed Activity", "category": "Biodiversity", "level": 1, "difficulty": "Basic", "timeLimit": 5, "pointValue": 100, "verificationType": "photo", "status": "active", "prerequisites": [], "skillTags": ["planting", "growth"]},
+    {"id": 4, "title": "Design Recycling Station Layout", "category": "Waste Management", "level": 2, "difficulty": "Intermediate", "timeLimit": 14, "pointValue": 150, "verificationType": "document", "status": "active", "prerequisites": [1], "skillTags": ["design", "planning"]},
+    {"id": 5, "title": "Calculate Home Energy Audit", "category": "Energy Efficiency", "level": 2, "difficulty": "Intermediate", "timeLimit": 10, "pointValue": 200, "verificationType": "document", "status": "active", "prerequisites": [], "skillTags": ["calculation", "analysis"]},
+    {"id": 6, "title": "Create Community Composting Plan", "category": "Waste Management", "level": 3, "difficulty": "Advanced", "timeLimit": 21, "pointValue": 300, "verificationType": "video", "status": "active", "prerequisites": [1, 4], "skillTags": ["planning", "community"]}
+  ],
+  "badges": [
+    {"id": 1, "name": "Seedling Starter", "icon": "🌱", "tier": "Bronze", "description": "Plant 10 seeds successfully", "criteria": "Complete 10 planting activities", "earnedBy": 25, "category": "Biodiversity", "verificationRequired": true},
+    {"id": 2, "name": "Recycling Champion", "icon": "♻️", "tier": "Silver", "description": "Achieve 100% sorting accuracy", "criteria": "Perfect score on waste sorting tasks", "earnedBy": 18, "category": "Waste Management", "verificationRequired": true},
+    {"id": 3, "name": "Water Guardian", "icon": "💧", "tier": "Gold", "description": "Save 500L of virtual water", "criteria": "Complete water conservation challenges", "earnedBy": 12, "category": "Water Conservation", "verificationRequired": true},
+    {"id": 4, "name": "Energy Master", "icon": "⚡", "tier": "Platinum", "description": "Complete all energy efficiency tasks", "criteria": "100% completion in Energy category", "earnedBy": 8, "category": "Energy Efficiency", "verificationRequired": true},
+    {"id": 5, "name": "Eco Warrior", "icon": "🌍", "tier": "Diamond", "description": "Achieve 90%+ completion rate overall", "criteria": "Maintain excellence across all categories", "earnedBy": 5, "category": "Achievement", "verificationRequired": false},
+    {"id": 6, "name": "Green Leader", "icon": "🏆", "tier": "Gold", "description": "Help 5 peers complete tasks", "criteria": "Mentor and assist other students", "earnedBy": 7, "category": "Community", "verificationRequired": true},
+    {"id": 7, "name": "Perfect Score", "icon": "🎯", "tier": "Silver", "description": "100% on 10 consecutive quizzes", "criteria": "Perfect quiz performance streak", "earnedBy": 3, "category": "Achievement", "verificationRequired": false},
+    {"id": 8, "name": "Eco Scientist", "icon": "🔬", "tier": "Platinum", "description": "Complete research projects", "criteria": "Advanced research and analysis", "earnedBy": 4, "category": "Environmental Awareness", "verificationRequired": true}
+  ],
+  "pendingVerifications": [
+    {"id": 1, "studentName": "Alice Johnson", "studentId": 1, "taskTitle": "Solar Panel Research", "submissionType": "video", "submittedDate": "2025-09-23", "badgeTarget": "Energy Master", "status": "pending"},
+    {"id": 2, "studentName": "Bob Smith", "studentId": 2, "taskTitle": "Waste Sorting Challenge", "submissionType": "photo", "submittedDate": "2025-09-22", "badgeTarget": "Recycling Champion", "status": "pending"},
+    {"id": 3, "studentName": "Emma Brown", "studentId": 5, "taskTitle": "Community Garden Project", "submissionType": "document", "submittedDate": "2025-09-23", "badgeTarget": "Green Leader", "status": "pending"}
+  ],
+  "quizLevels": [
+    {"level": 1, "name": "Beginner", "questions": 10, "timeLimit": 15, "passingScore": 70, "categories": ["Environmental Awareness", "Basic Waste Management"]},
+    {"level": 2, "name": "Intermediate", "questions": 15, "timeLimit": 20, "passingScore": 75, "categories": ["Water Conservation", "Energy Basics"]},
+    {"level": 3, "name": "Advanced", "questions": 20, "timeLimit": 25, "passingScore": 80, "categories": ["Climate Change", "Biodiversity"]},
+    {"level": 4, "name": "Expert", "questions": 25, "timeLimit": 30, "passingScore": 85, "categories": ["Advanced Energy", "Policy"]},
+    {"level": 5, "name": "Master", "questions": 30, "timeLimit": 35, "passingScore": 90, "categories": ["All Categories Combined"]}
+  ],
+  "gameStats": {
+    "trashSorter": {
+      "totalItems": 25430,
+      "accuracyRate": 89,
+      "avgCompletionTime": 42,
+      "improvementRate": 15,
+      "topPlayers": [
+        {"name": "Carol Davis", "score": 3850, "accuracy": 96, "improvement": "+23%"},
+        {"name": "Alice Johnson", "score": 3200, "accuracy": 94, "improvement": "+18%"},
+        {"name": "Emma Brown", "score": 2980, "accuracy": 91, "improvement": "+12%"}
+      ]
+    },
+    "waterSaverTap": {
+      "waterSaved": 4250,
+      "avgReactionTime": 0.6,
+      "levelsCompleted": 245,
+      "challengesWon": 89,
+      "topPlayers": [
+        {"name": "Emma Brown", "waterSaved": 680, "reactionTime": 0.4, "challengesWon": 25},
+        {"name": "Carol Davis", "waterSaved": 620, "reactionTime": 0.5, "challengesWon": 22},
+        {"name": "Alice Johnson", "waterSaved": 590, "reactionTime": 0.6, "challengesWon": 20}
+      ]
+    },
+    "carbonRunner": {
+      "totalDistance": 185000,
+      "greenEnergyCollected": 12950,
+      "pollutionAvoided": 890,
+      "knowledgeCheckpoints": 445,
+      "topPlayers": [
+        {"name": "Carol Davis", "distance": 22500, "energy": 1850, "checkpoints": 65},
+        {"name": "Alice Johnson", "distance": 18200, "energy": 1620, "checkpoints": 58},
+        {"name": "Emma Brown", "distance": 16800, "energy": 1480, "checkpoints": 52}
+      ]
+    }
+  },
+  "platformStats": {
+    "totalStudents": 5,
+    "activeTasks": 6,
+    "completedLessons": 342,
+    "totalEcoPoints": 18180,
+    "badgesAwarded": 52,
+    "pendingVerifications": 3,
+    "categoriesActive": 6,
+    "avgEngagementScore": 87
+  },
+  "recentActivity": [
+    {"type": "badge", "user": "Carol Davis", "action": "earned", "item": "Eco Warrior badge", "time": "5 minutes ago", "icon": "🏆"},
+    {"type": "task", "user": "Alice Johnson", "action": "submitted", "item": "Water Conservation Task", "time": "15 minutes ago", "icon": "📋"},
+    {"type": "game", "user": "Emma Brown", "action": "completed", "item": "Trash Sorter Level 15", "time": "30 minutes ago", "icon": "🎮"},
+    {"type": "quiz", "user": "Bob Smith", "action": "scored 95% on", "item": "Energy Conservation Quiz", "time": "1 hour ago", "icon": "📝"},
+    {"type": "task", "user": "David Wilson", "action": "started", "item": "Biodiversity Research", "time": "2 hours ago", "icon": "📋"}
+  ]
+};
+
+// Global variables
+let currentSection = 'dashboard';
+let filteredStudents = [...appData.students];
+let currentTaskLevel = 'all';
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', function() {
+  initializeNavigation();
+  populateDashboard();
+  populateStudentsTable();
+  populateCategoriesGrid();
+  populateTasksGrid();
+  populateBadgesGrid();
+  populateVerificationQueue();
+  populateQuizLevels();
+  initializeCharts();
+  initializeSearchAndFilter();
+  initializeFormHandlers();
+  populateTaskCategoryOptions();
+});
+
+// Enhanced Navigation functionality
+function initializeNavigation() {
+  const navTabs = document.querySelectorAll('.nav-tab');
+  const sections = document.querySelectorAll('.content-section');
+
+  navTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetSection = tab.getAttribute('data-section');
+      
+      // Update active nav tab
+      navTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      // Update active section
+      sections.forEach(s => s.classList.remove('active'));
+      document.getElementById(targetSection).classList.add('active');
+      
+      currentSection = targetSection;
+      
+      // Initialize charts when analytics section is shown
+      if (targetSection === 'analytics') {
+        setTimeout(initializeCharts, 100);
+      }
+    });
+  });
+
+  // Level tabs for tasks
+  const levelTabs = document.querySelectorAll('.level-tab');
+  levelTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetLevel = tab.getAttribute('data-level');
+      
+      levelTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      
+      currentTaskLevel = targetLevel;
+      populateTasksGrid();
+    });
+  });
+}
+
+// Dashboard population
+function populateDashboard() {
+  // Update stats
+  document.getElementById('totalStudents').textContent = appData.platformStats.totalStudents;
+  document.getElementById('activeTasks').textContent = appData.platformStats.activeTasks;
+  document.getElementById('pendingVerifications').textContent = appData.platformStats.pendingVerifications;
+  document.getElementById('totalEcoPoints').textContent = appData.platformStats.totalEcoPoints.toLocaleString();
+  document.getElementById('categoriesActive').textContent = appData.platformStats.categoriesActive;
+  document.getElementById('avgEngagement').textContent = appData.platformStats.avgEngagementScore + '%';
+
+  // Populate activity feed
+  populateActivityFeed();
+  
+  // Populate leaderboard
+  populateLeaderboard();
+}
+
+function populateActivityFeed() {
+  const activityFeed = document.getElementById('activityFeed');
+  activityFeed.innerHTML = '';
+  
+  appData.recentActivity.forEach(activity => {
+    const activityItem = document.createElement('div');
+    activityItem.className = 'activity-item';
+    
+    activityItem.innerHTML = `
+      <div class="activity-icon activity-${activity.type}">
+        ${activity.icon}
+      </div>
+      <div class="activity-content">
+        <div class="activity-text">
+          <strong>${activity.user}</strong> ${activity.action} ${activity.item}
+        </div>
+        <div class="activity-time">${activity.time}</div>
+      </div>
+    `;
+    
+    activityFeed.appendChild(activityItem);
+  });
+}
+
+function populateLeaderboard() {
+  const leaderboard = document.getElementById('leaderboard');
+  leaderboard.innerHTML = '';
+  
+  // Sort students by eco points
+  const topStudents = [...appData.students]
+    .sort((a, b) => b.ecoPoints - a.ecoPoints)
+    .slice(0, 3);
+    
+  topStudents.forEach((student, index) => {
+    const item = document.createElement('div');
+    item.className = 'leaderboard-item';
+    
+    item.innerHTML = `
+      <div class="leaderboard-rank">#${index + 1}</div>
+      <img src="${student.photo}" alt="${student.name}" class="leaderboard-avatar">
+      <div class="leaderboard-info">
+        <div class="leaderboard-name">${student.name}</div>
+        <div class="leaderboard-points">${student.ecoPoints.toLocaleString()} points</div>
+      </div>
+    `;
+    
+    leaderboard.appendChild(item);
+  });
+}
+
+// Enhanced Students Management
+function populateStudentsTable() {
+  const tableBody = document.getElementById('studentsTableBody');
+  tableBody.innerHTML = '';
+  
+  filteredStudents.forEach(student => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>
+        <img src="${student.photo}" alt="${student.name}" class="student-photo">
+      </td>
+      <td>
+        <div class="student-info">
+          <div class="student-name">${student.name}</div>
+          <div class="student-id">${student.rollNumber}</div>
+        </div>
+      </td>
+      <td>${student.class}</td>
+      <td><strong>${student.ecoPoints.toLocaleString()}</strong></td>
+      <td><span class="badge-count">${student.badges}</span></td>
+      <td><span class="level-badge">${student.level}</span></td>
+      <td>
+        <div class="completion-rate">
+          <span>${student.completionRate}%</span>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${student.completionRate}%"></div>
+          </div>
+        </div>
+      </td>
+      <td><strong>${student.skillsMastered}</strong></td>
+      <td>
+        <span class="performance-trend trend-${student.performanceTrend}">
+          ${student.performanceTrend}
+        </span>
+      </td>
+      <td>
+        <div class="recent-activity-cell" title="${student.recentActivity}">
+          ${student.recentActivity}
+        </div>
+      </td>
+      <td>
+        <div class="action-buttons-small">
+          <button class="btn btn--xs btn--primary" onclick="viewStudentDetails(${student.id})">Profile</button>
+          <button class="btn btn--xs btn--secondary" onclick="editStudent(${student.id})">Edit</button>
+        </div>
+      </td>
+    `;
+    tableBody.appendChild(row);
+  });
+}
+
+// Categories Management
+function populateCategoriesGrid() {
+  const categoriesGrid = document.getElementById('categoriesGrid');
+  categoriesGrid.innerHTML = '';
+  
+  appData.categories.forEach(category => {
+    const categoryCard = document.createElement('div');
+    categoryCard.className = 'category-card';
+    
+    categoryCard.innerHTML = `
+      <div class="category-header">
+        <h3 class="category-name">${category.name}</h3>
+        <span class="category-status">${category.status}</span>
+      </div>
+      
+      <div class="category-levels">
+        ${category.levels.map(level => `<span class="level-tag">${level}</span>`).join('')}
+      </div>
+      
+      <div class="category-stats">
+        <div class="category-stat">
+          <div class="category-stat-value">${category.taskCount}</div>
+          <div class="category-stat-label">Tasks</div>
+        </div>
+        <div class="category-stat">
+          <div class="category-stat-value">${category.levels.length}</div>
+          <div class="category-stat-label">Levels</div>
+        </div>
+      </div>
+      
+      <div class="category-skills">
+        ${category.skillTags.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+      </div>
+      
+      <div class="category-actions">
+        <button class="btn btn--xs btn--primary" onclick="editCategory(${category.id})">Edit</button>
+        <button class="btn btn--xs btn--secondary" onclick="deleteCategory(${category.id})">Delete</button>
+      </div>
+    `;
+    
+    categoriesGrid.appendChild(categoryCard);
+  });
+}
+
+// Tasks Management
+function populateTasksGrid() {
+  const tasksGrid = document.getElementById('tasksGrid');
+  tasksGrid.innerHTML = '';
+  
+  let filteredTasks = appData.tasks;
+  if (currentTaskLevel !== 'all') {
+    filteredTasks = appData.tasks.filter(task => task.level === parseInt(currentTaskLevel));
+  }
+  
+  filteredTasks.forEach(task => {
+    const taskCard = document.createElement('div');
+    taskCard.className = 'task-card';
+    
+    taskCard.innerHTML = `
+      <div class="task-header">
+        <h4 class="task-title">${task.title}</h4>
+        <span class="task-level">Level ${task.level}</span>
+      </div>
+      
+      <div class="task-meta">
+        <div class="task-category">${task.category}</div>
+        <div class="task-difficulty difficulty-${task.difficulty.toLowerCase()}">${task.difficulty}</div>
+        <div>Time: ${task.timeLimit} days</div>
+        <div>Points: ${task.pointValue}</div>
+      </div>
+      
+      <div class="task-skills">
+        ${task.skillTags.map(skill => `<span class="skill-tag">${skill}</span>`).join('')}
+      </div>
+      
+      <div class="task-actions">
+        <div class="task-submissions">
+          Status: <span class="status--${task.status === 'active' ? 'success' : 'warning'}">${task.status}</span>
+        </div>
+        <div>
+          <button class="btn btn--xs btn--primary" onclick="editTask(${task.id})">Edit</button>
+          <button class="btn btn--xs btn--secondary" onclick="duplicateTask(${task.id})">Copy</button>
+        </div>
+      </div>
+    `;
+    
+    tasksGrid.appendChild(taskCard);
+  });
+}
+
+// Badges Management
+function populateBadgesGrid() {
+  const badgesGrid = document.getElementById('badgesGrid');
+  badgesGrid.innerHTML = '';
+  
+  appData.badges.forEach(badge => {
+    const badgeCard = document.createElement('div');
+    badgeCard.className = 'badge-card';
+    
+    badgeCard.innerHTML = `
+      <div class="badge-tier tier-${badge.tier.toLowerCase()}">${badge.tier}</div>
+      <div class="badge-icon">${badge.icon}</div>
+      <h4 class="badge-name">${badge.name}</h4>
+      <p class="badge-description">${badge.description}</p>
+      <div class="badge-earned-by">Earned by ${badge.earnedBy} students</div>
+    `;
+    
+    badgesGrid.appendChild(badgeCard);
+  });
+}
+
+// Verification Queue
+function populateVerificationQueue() {
+  const verificationList = document.getElementById('verificationList');
+  const pendingCount = document.getElementById('pendingCount');
+  const approvedToday = document.getElementById('approvedToday');
+  
+  verificationList.innerHTML = '';
+  pendingCount.textContent = appData.pendingVerifications.length;
+  approvedToday.textContent = '8'; // Mock data
+  
+  appData.pendingVerifications.forEach(verification => {
+    const verificationItem = document.createElement('div');
+    verificationItem.className = 'verification-item';
+    
+    verificationItem.innerHTML = `
+      <div class="verification-info">
+        <div class="verification-student">${verification.studentName}</div>
+        <div class="verification-task">${verification.taskTitle}</div>
+        <div class="verification-date">${verification.submittedDate}</div>
+      </div>
+      <div class="verification-actions">
+        <button class="btn btn--xs btn--primary" onclick="approveSubmission(${verification.id})">
+          ✓ Approve
+        </button>
+        <button class="btn btn--xs btn--secondary" onclick="rejectSubmission(${verification.id})">
+          ✗ Reject
+        </button>
+        <button class="btn btn--xs btn--outline" onclick="viewSubmission(${verification.id})">
+          👁 View
+        </button>
+      </div>
+    `;
+    
+    verificationList.appendChild(verificationItem);
+  });
+}
+
+// Quiz Levels
+function populateQuizLevels() {
+  const quizLevelsGrid = document.getElementById('quizLevelsGrid');
+  quizLevelsGrid.innerHTML = '';
+  
+  appData.quizLevels.forEach(quiz => {
+    const quizCard = document.createElement('div');
+    quizCard.className = 'quiz-level-card';
+    
+    quizCard.innerHTML = `
+      <div class="quiz-level-header">
+        <h4 class="quiz-level-name">${quiz.name}</h4>
+        <span class="quiz-level-number">L${quiz.level}</span>
+      </div>
+      
+      <div class="quiz-stats">
+        <div class="stat-item">
+          <span class="stat-label">Questions</span>
+          <span class="stat-value">${quiz.questions}</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Time Limit</span>
+          <span class="stat-value">${quiz.timeLimit}min</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Passing Score</span>
+          <span class="stat-value">${quiz.passingScore}%</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Categories</span>
+          <span class="stat-value">${quiz.categories.length}</span>
+        </div>
+      </div>
+      
+      <div class="quiz-categories">
+        <h5>Covered Topics</h5>
+        <div class="category-tags">
+          ${quiz.categories.map(cat => `<span class="category-tag">${cat}</span>`).join('')}
+        </div>
+      </div>
+      
+      <div class="task-actions">
+        <button class="btn btn--primary btn--sm" onclick="editQuiz(${quiz.level})">Edit Quiz</button>
+        <button class="btn btn--secondary btn--sm" onclick="viewQuizStats(${quiz.level})">View Stats</button>
+      </div>
+    `;
+    
+    quizLevelsGrid.appendChild(quizCard);
+  });
+}
+
+// Search and filter functionality
+function initializeSearchAndFilter() {
+  const searchInput = document.getElementById('studentSearch');
+  const classFilter = document.getElementById('classFilter');
+  const performanceFilter = document.getElementById('performanceFilter');
+  
+  if (searchInput) searchInput.addEventListener('input', filterStudents);
+  if (classFilter) classFilter.addEventListener('change', filterStudents);
+  if (performanceFilter) performanceFilter.addEventListener('change', filterStudents);
+}
+
+function filterStudents() {
+  const searchTerm = document.getElementById('studentSearch')?.value.toLowerCase() || '';
+  const classFilter = document.getElementById('classFilter')?.value || '';
+  const performanceFilter = document.getElementById('performanceFilter')?.value || '';
+  
+  filteredStudents = appData.students.filter(student => {
+    const matchesSearch = student.name.toLowerCase().includes(searchTerm) ||
+                         student.rollNumber.toLowerCase().includes(searchTerm);
+    const matchesClass = !classFilter || student.class === classFilter;
+    
+    let matchesPerformance = true;
+    if (performanceFilter) {
+      switch (performanceFilter) {
+        case 'excellent':
+          matchesPerformance = student.completionRate >= 90;
+          break;
+        case 'good':
+          matchesPerformance = student.completionRate >= 75 && student.completionRate < 90;
+          break;
+        case 'average':
+          matchesPerformance = student.completionRate >= 60 && student.completionRate < 75;
+          break;
+        case 'needs-improvement':
+          matchesPerformance = student.completionRate < 60;
+          break;
+      }
+    }
+    
+    return matchesSearch && matchesClass && matchesPerformance;
+  });
+  
+  populateStudentsTable();
+}
+
+// Enhanced Student Details Modal
+function viewStudentDetails(studentId) {
+  const student = appData.students.find(s => s.id === studentId);
+  if (!student) return;
+  
+  const modalBody = document.getElementById('studentModalBody');
+  modalBody.innerHTML = `
+    <div class="student-detail-grid">
+      <div class="student-basic-info">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+          <img src="${student.photo}" alt="${student.name}" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--color-primary);">
+          <div>
+            <h4>${student.name}</h4>
+            <p><strong>ID:</strong> ${student.rollNumber}</p>
+            <p><strong>Class:</strong> ${student.class}</p>
+          </div>
+        </div>
+        
+        <div class="performance-analytics" style="margin-bottom: 20px;">
+          <h4>Performance Analytics</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 16px; margin-bottom: 16px;">
+            <div class="stat-item">
+              <span class="stat-label">Eco Points</span>
+              <span class="stat-value">${student.ecoPoints.toLocaleString()}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Level</span>
+              <span class="stat-value">${student.level}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Badges</span>
+              <span class="stat-value">${student.badges}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Completion</span>
+              <span class="stat-value">${student.completionRate}%</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Skills</span>
+              <span class="stat-value">${student.skillsMastered}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Engagement</span>
+              <span class="stat-value">${student.engagementScore}%</span>
+            </div>
+          </div>
+          
+          <div class="chart-container" style="position: relative; height: 200px; margin-bottom: 16px;">
+            <canvas id="studentProgressChart"></canvas>
+          </div>
+        </div>
+
+        <div class="badge-gallery-student">
+          <h4>Recent Badges Earned</h4>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;">
+            ${appData.badges.slice(0, student.badges).map(badge => `
+              <div style="display: flex; align-items: center; gap: 6px; background: var(--color-bg-1); padding: 6px 12px; border-radius: 20px; font-size: 12px;">
+                <span>${badge.icon}</span>
+                <span>${badge.name}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="activity-timeline">
+          <h4>Recent Activity Timeline</h4>
+          <div style="background: var(--color-bg-1); padding: 12px; border-radius: 8px; font-size: 14px;">
+            <div style="margin-bottom: 8px;"><strong>Latest:</strong> ${student.recentActivity}</div>
+            <div style="color: var(--color-text-secondary);"><strong>Last Active:</strong> ${student.lastActive}</div>
+            <div style="color: var(--color-success); margin-top: 8px;"><strong>Login Streak:</strong> ${student.loginStreak} days</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  document.getElementById('studentModal').classList.remove('hidden');
+  
+  // Initialize student progress chart
+  setTimeout(() => {
+    const ctx = document.getElementById('studentProgressChart');
+    if (ctx && !ctx.chart) {
+      ctx.chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Current'],
+          datasets: [{
+            label: 'Eco Points',
+            data: [500, 850, 1200, 1800, student.ecoPoints],
+            borderColor: '#1FB8CD',
+            backgroundColor: 'rgba(31, 184, 205, 0.1)',
+            fill: true,
+            tension: 0.4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+  }, 100);
+}
+
+function closeStudentModal() {
+  document.getElementById('studentModal').classList.add('hidden');
+  // Clean up chart
+  const ctx = document.getElementById('studentProgressChart');
+  if (ctx && ctx.chart) {
+    ctx.chart.destroy();
+    ctx.chart = null;
+  }
+}
+
+// Modal functionality
+function openTaskModal() {
+  document.getElementById('taskModal').classList.remove('hidden');
+}
+
+function closeTaskModal() {
+  document.getElementById('taskModal').classList.add('hidden');
+  document.getElementById('taskForm').reset();
+}
+
+function openCategoryModal() {
+  document.getElementById('categoryModal').classList.remove('hidden');
+}
+
+function closeCategoryModal() {
+  document.getElementById('categoryModal').classList.add('hidden');
+  document.getElementById('categoryForm').reset();
+}
+
+// Notification functionality
+function toggleNotifications() {
+  const dropdown = document.getElementById('notificationDropdown');
+  dropdown.classList.toggle('hidden');
+}
+
+// Quick action functions
+function showBadgeVerifications() {
+  document.querySelector('[data-section="badges"]').click();
+}
+
+function createQuiz() {
+  document.querySelector('[data-section="quizzes"]').click();
+  // Could open quiz creation modal here
+}
+
+function refreshDashboard() {
+  populateDashboard();
+  showNotification('Dashboard refreshed successfully!', 'success');
+}
+
+function exportData() {
+  showNotification('Data export initiated. Download will start shortly.', 'info');
+}
+
+// Verification actions
+function approveSubmission(verificationId) {
+  const verification = appData.pendingVerifications.find(v => v.id === verificationId);
+  if (verification) {
+    // Remove from pending list
+    const index = appData.pendingVerifications.findIndex(v => v.id === verificationId);
+    appData.pendingVerifications.splice(index, 1);
+    
+    // Update UI
+    populateVerificationQueue();
+    showNotification(`Approved submission for ${verification.studentName}`, 'success');
+  }
+}
+
+function rejectSubmission(verificationId) {
+  const verification = appData.pendingVerifications.find(v => v.id === verificationId);
+  if (verification) {
+    // Remove from pending list
+    const index = appData.pendingVerifications.findIndex(v => v.id === verificationId);
+    appData.pendingVerifications.splice(index, 1);
+    
+    // Update UI
+    populateVerificationQueue();
+    showNotification(`Rejected submission for ${verification.studentName}`, 'warning');
+  }
+}
+
+function viewSubmission(verificationId) {
+  const verification = appData.pendingVerifications.find(v => v.id === verificationId);
+  if (verification) {
+    showNotification(`Viewing submission: ${verification.taskTitle}`, 'info');
+  }
+}
+
+// Form handlers
+function initializeFormHandlers() {
+  const taskForm = document.getElementById('taskForm');
+  const categoryForm = document.getElementById('categoryForm');
+  
+  if (taskForm) {
+    taskForm.addEventListener('submit', handleTaskSubmission);
+  }
+  
+  if (categoryForm) {
+    categoryForm.addEventListener('submit', handleCategorySubmission);
+  }
+}
+
+function populateTaskCategoryOptions() {
+  const categorySelect = document.getElementById('taskCategory');
+  if (categorySelect) {
+    categorySelect.innerHTML = '<option value="">Select Category</option>';
+    appData.categories.forEach(category => {
+      const option = document.createElement('option');
+      option.value = category.name;
+      option.textContent = category.name;
+      categorySelect.appendChild(option);
+    });
+  }
+}
+
+function handleTaskSubmission(event) {
+  event.preventDefault();
+  
+  const formData = {
+    title: document.getElementById('taskTitle').value,
+    category: document.getElementById('taskCategory').value,
+    description: document.getElementById('taskDescription').value,
+    difficulty: document.getElementById('taskDifficulty').value,
+    timeLimit: document.getElementById('taskTimeLimit').value,
+    points: document.getElementById('taskPoints').value,
+    verification: document.getElementById('taskVerification').value
+  };
+  
+  // Add new task to data
+  const newTask = {
+    id: appData.tasks.length + 1,
+    title: formData.title,
+    category: formData.category,
+    level: formData.difficulty === 'Basic' ? 1 : formData.difficulty === 'Intermediate' ? 2 : 3,
+    difficulty: formData.difficulty,
+    timeLimit: parseInt(formData.timeLimit),
+    pointValue: parseInt(formData.points),
+    verificationType: formData.verification,
+    status: 'active',
+    prerequisites: [],
+    skillTags: ['new-skill']
+  };
+  
+  appData.tasks.push(newTask);
+  populateTasksGrid();
+  closeTaskModal();
+  showNotification('Task created successfully!', 'success');
+}
+
+function handleCategorySubmission(event) {
+  event.preventDefault();
+  
+  const name = document.getElementById('categoryName').value;
+  const skills = document.getElementById('categorySkills').value.split(',').map(s => s.trim());
+  const levels = Array.from(document.querySelectorAll('.level-checkbox:checked')).map(cb => cb.value);
+  
+  const newCategory = {
+    id: appData.categories.length + 1,
+    name: name,
+    levels: levels,
+    taskCount: 0,
+    skillTags: skills,
+    status: 'active'
+  };
+  
+  appData.categories.push(newCategory);
+  populateCategoriesGrid();
+  populateTaskCategoryOptions();
+  closeCategoryModal();
+  showNotification('Category created successfully!', 'success');
+}
+
+// CRUD operations
+function editCategory(categoryId) {
+  showNotification(`Edit category functionality for ID: ${categoryId}`, 'info');
+}
+
+function deleteCategory(categoryId) {
+  if (confirm('Are you sure you want to delete this category?')) {
+    const index = appData.categories.findIndex(c => c.id === categoryId);
+    if (index !== -1) {
+      appData.categories.splice(index, 1);
+      populateCategoriesGrid();
+      showNotification('Category deleted successfully!', 'success');
+    }
+  }
+}
+
+function editTask(taskId) {
+  showNotification(`Edit task functionality for ID: ${taskId}`, 'info');
+}
+
+function duplicateTask(taskId) {
+  const task = appData.tasks.find(t => t.id === taskId);
+  if (task) {
+    const newTask = {
+      ...task,
+      id: appData.tasks.length + 1,
+      title: task.title + ' (Copy)'
+    };
+    appData.tasks.push(newTask);
+    populateTasksGrid();
+    showNotification('Task duplicated successfully!', 'success');
+  }
+}
+
+function editStudent(studentId) {
+  showNotification(`Edit student functionality for ID: ${studentId}`, 'info');
+}
+
+function editQuiz(quizLevel) {
+  showNotification(`Edit quiz level ${quizLevel} functionality`, 'info');
+}
+
+function viewQuizStats(quizLevel) {
+  showNotification(`View quiz statistics for level ${quizLevel}`, 'info');
+}
+
+// Report generation
+function generateIndividualReport() {
+  showNotification('Generating individual student reports...', 'info');
+}
+
+function generateClassReport() {
+  showNotification('Generating class comparison report...', 'info');
+}
+
+function generateGameReport() {
+  showNotification('Generating game engagement analytics...', 'info');
+}
+
+function generateCertificates() {
+  showNotification('Creating achievement certificates...', 'info');
+}
+
+function showTaskTemplates() {
+  showNotification('Task template library opened', 'info');
+}
+
+function openQuizModal() {
+  showNotification('Quiz creation modal would open here', 'info');
+}
+
+// Charts initialization
+function initializeCharts() {
+  if (currentSection !== 'analytics') return;
+  
+  initializeTrashSorterChart();
+  initializeWaterSaverChart();
+  initializeCarbonRunnerChart();
+  populateGameLeaderboards();
+}
+
+function initializeTrashSorterChart() {
+  const ctx = document.getElementById('trashSorterChart');
+  if (!ctx || ctx.chart) return;
+  
+  ctx.chart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Correct', 'Incorrect'],
+      datasets: [{
+        data: [89, 11],
+        backgroundColor: ['#1FB8CD', '#FFC185'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { usePointStyle: true }
+        }
+      }
+    }
+  });
+}
+
+function initializeWaterSaverChart() {
+  const ctx = document.getElementById('waterSaverChart');
+  if (!ctx || ctx.chart) return;
+  
+  ctx.chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Water Saved (L)',
+        data: [520, 680, 590, 720, 650, 480, 610],
+        backgroundColor: '#1FB8CD',
+        borderRadius: 4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+function initializeCarbonRunnerChart() {
+  const ctx = document.getElementById('carbonRunnerChart');
+  if (!ctx || ctx.chart) return;
+  
+  ctx.chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Distance (km)',
+        data: [12, 19, 25, 32, 28, 35],
+        borderColor: '#1FB8CD',
+        backgroundColor: 'rgba(31, 184, 205, 0.1)',
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+}
+
+function populateGameLeaderboards() {
+  // Trash Sorter Leaderboard
+  const trashLeaderboard = document.getElementById('trashSorterLeaderboard');
+  if (trashLeaderboard) {
+    trashLeaderboard.innerHTML = '';
+    appData.gameStats.trashSorter.topPlayers.forEach(player => {
+      const playerDiv = document.createElement('div');
+      playerDiv.className = 'game-player';
+      playerDiv.innerHTML = `
+        <span class="game-player-name">${player.name}</span>
+        <span class="game-player-score">${player.score}</span>
+      `;
+      trashLeaderboard.appendChild(playerDiv);
+    });
+  }
+  
+  // Water Saver Leaderboard
+  const waterLeaderboard = document.getElementById('waterSaverLeaderboard');
+  if (waterLeaderboard) {
+    waterLeaderboard.innerHTML = '';
+    appData.gameStats.waterSaverTap.topPlayers.forEach(player => {
+      const playerDiv = document.createElement('div');
+      playerDiv.className = 'game-player';
+      playerDiv.innerHTML = `
+        <span class="game-player-name">${player.name}</span>
+        <span class="game-player-score">${player.waterSaved}L</span>
+      `;
+      waterLeaderboard.appendChild(playerDiv);
+    });
+  }
+  
+  // Carbon Runner Leaderboard
+  const carbonLeaderboard = document.getElementById('carbonRunnerLeaderboard');
+  if (carbonLeaderboard) {
+    carbonLeaderboard.innerHTML = '';
+    appData.gameStats.carbonRunner.topPlayers.forEach(player => {
+      const playerDiv = document.createElement('div');
+      playerDiv.className = 'game-player';
+      playerDiv.innerHTML = `
+        <span class="game-player-name">${player.name}</span>
+        <span class="game-player-score">${player.distance}m</span>
+      `;
+      carbonLeaderboard.appendChild(playerDiv);
+    });
+  }
+}
+
+// Utility functions
+function showNotification(message, type = 'info') {
+  // Create notification element
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--color-${type === 'success' ? 'success' : type === 'warning' ? 'warning' : type === 'error' ? 'error' : 'info'});
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    z-index: 10000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideInRight 0.3s ease;
+  `;
+  notification.textContent = message;
+  
+  document.body.appendChild(notification);
+  
+  // Remove after 3 seconds
+  setTimeout(() => {
+    notification.style.animation = 'slideOutRight 0.3s ease';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.parentNode.removeChild(notification);
+      }
+    }, 300);
+  }, 3000);
+}
+
+// Close modals when clicking outside
+document.addEventListener('click', function(event) {
+  const modals = document.querySelectorAll('.modal:not(.hidden)');
+  modals.forEach(modal => {
+    if (event.target === modal) {
+      modal.classList.add('hidden');
+    }
+  });
+  
+  // Close notification dropdown when clicking outside
+  const notificationDropdown = document.getElementById('notificationDropdown');
+  if (notificationDropdown && !notificationDropdown.classList.contains('hidden')) {
+    if (!event.target.closest('.notification-center')) {
+      notificationDropdown.classList.add('hidden');
+    }
+  }
+});
+
+// Keyboard navigation for modals
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    const openModals = document.querySelectorAll('.modal:not(.hidden)');
+    openModals.forEach(modal => {
+      modal.classList.add('hidden');
+    });
+    
+    // Close notification dropdown
+    const notificationDropdown = document.getElementById('notificationDropdown');
+    if (notificationDropdown && !notificationDropdown.classList.contains('hidden')) {
+      notificationDropdown.classList.add('hidden');
+    }
+  }
+});
+
+// Add CSS animations for notifications
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoLearn Pro Dashboard - Advanced Environmental Education Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>:root {
+  /* Primitive Color Tokens */
+  --color-white: rgba(255, 255, 255, 1);
+  --color-black: rgba(0, 0, 0, 1);
+  --color-cream-50: rgba(252, 252, 249, 1);
+  --color-cream-100: rgba(255, 255, 253, 1);
+  --color-gray-200: rgba(245, 245, 245, 1);
+  --color-gray-300: rgba(167, 169, 169, 1);
+  --color-gray-400: rgba(119, 124, 124, 1);
+  --color-slate-500: rgba(98, 108, 113, 1);
+  --color-brown-600: rgba(94, 82, 64, 1);
+  --color-charcoal-700: rgba(31, 33, 33, 1);
+  --color-charcoal-800: rgba(38, 40, 40, 1);
+  --color-slate-900: rgba(19, 52, 59, 1);
+  --color-teal-300: rgba(50, 184, 198, 1);
+  --color-teal-400: rgba(45, 166, 178, 1);
+  --color-teal-500: rgba(33, 128, 141, 1);
+  --color-teal-600: rgba(29, 116, 128, 1);
+  --color-teal-700: rgba(26, 104, 115, 1);
+  --color-teal-800: rgba(41, 150, 161, 1);
+  --color-red-400: rgba(255, 84, 89, 1);
+  --color-red-500: rgba(192, 21, 47, 1);
+  --color-orange-400: rgba(230, 129, 97, 1);
+  --color-orange-500: rgba(168, 75, 47, 1);
+
+  /* RGB versions for opacity control */
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+  --color-slate-500-rgb: 98, 108, 113;
+  --color-red-500-rgb: 192, 21, 47;
+  --color-red-400-rgb: 255, 84, 89;
+  --color-orange-500-rgb: 168, 75, 47;
+  --color-orange-400-rgb: 230, 129, 97;
+
+  /* Background color tokens (Light Mode) */
+  --color-bg-1: rgba(59, 130, 246, 0.08); /* Light blue */
+  --color-bg-2: rgba(245, 158, 11, 0.08); /* Light yellow */
+  --color-bg-3: rgba(34, 197, 94, 0.08); /* Light green */
+  --color-bg-4: rgba(239, 68, 68, 0.08); /* Light red */
+  --color-bg-5: rgba(147, 51, 234, 0.08); /* Light purple */
+  --color-bg-6: rgba(249, 115, 22, 0.08); /* Light orange */
+  --color-bg-7: rgba(236, 72, 153, 0.08); /* Light pink */
+  --color-bg-8: rgba(6, 182, 212, 0.08); /* Light cyan */
+
+  /* Semantic Color Tokens (Light Mode) */
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-primary-active: var(--color-teal-700);
+  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-btn-primary-text: var(--color-cream-50);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-error: var(--color-red-500);
+  --color-success: var(--color-teal-500);
+  --color-warning: var(--color-orange-500);
+  --color-info: var(--color-slate-500);
+  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+  --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+
+  /* Common style patterns */
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.15;
+  --status-border-opacity: 0.25;
+  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+
+  /* RGB versions for opacity control */
+  --color-success-rgb: 33, 128, 141;
+  --color-error-rgb: 192, 21, 47;
+  --color-warning-rgb: 168, 75, 47;
+  --color-info-rgb: 98, 108, 113;
+
+  /* Typography */
+  --font-family-base: "FKGroteskNeue", "Geist", "Inter", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-family-mono: "Berkeley Mono", ui-monospace, SFMono-Regular, Menlo,
+    Monaco, Consolas, monospace;
+  --font-size-xs: 11px;
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-md: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 18px;
+  --font-size-2xl: 20px;
+  --font-size-3xl: 24px;
+  --font-size-4xl: 30px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 550;
+  --font-weight-bold: 600;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --letter-spacing-tight: -0.01em;
+
+  /* Spacing */
+  --space-0: 0;
+  --space-1: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-6: 6px;
+  --space-8: 8px;
+  --space-10: 10px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-base: 8px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04),
+    0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04),
+    0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.03);
+
+  /* Animation */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Layout */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+}
+
+/* Dark mode colors */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* RGB versions for opacity control (Dark Mode) */
+    --color-gray-400-rgb: 119, 124, 124;
+    --color-teal-300-rgb: 50, 184, 198;
+    --color-gray-300-rgb: 167, 169, 169;
+    --color-gray-200-rgb: 245, 245, 245;
+
+    /* Background color tokens (Dark Mode) */
+    --color-bg-1: rgba(29, 78, 216, 0.15); /* Dark blue */
+    --color-bg-2: rgba(180, 83, 9, 0.15); /* Dark yellow */
+    --color-bg-3: rgba(21, 128, 61, 0.15); /* Dark green */
+    --color-bg-4: rgba(185, 28, 28, 0.15); /* Dark red */
+    --color-bg-5: rgba(107, 33, 168, 0.15); /* Dark purple */
+    --color-bg-6: rgba(194, 65, 12, 0.15); /* Dark orange */
+    --color-bg-7: rgba(190, 24, 93, 0.15); /* Dark pink */
+    --color-bg-8: rgba(8, 145, 178, 0.15); /* Dark cyan */
+
+    /* Semantic Color Tokens (Dark Mode) */
+    --color-background: var(--color-charcoal-700);
+    --color-surface: var(--color-charcoal-800);
+    --color-text: var(--color-gray-200);
+    --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+    --color-primary: var(--color-teal-300);
+    --color-primary-hover: var(--color-teal-400);
+    --color-primary-active: var(--color-teal-800);
+    --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+    --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+    --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+    --color-error: var(--color-red-400);
+    --color-success: var(--color-teal-300);
+    --color-warning: var(--color-orange-400);
+    --color-info: var(--color-gray-300);
+    --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+    --color-btn-primary-text: var(--color-slate-900);
+    --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+    --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+    --button-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
+    --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
+
+    /* Common style patterns - updated for dark mode */
+    --focus-ring: 0 0 0 3px var(--color-focus-ring);
+    --focus-outline: 2px solid var(--color-primary);
+    --status-bg-opacity: 0.15;
+    --status-border-opacity: 0.25;
+    --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+
+    /* RGB versions for dark mode */
+    --color-success-rgb: var(--color-teal-300-rgb);
+    --color-error-rgb: var(--color-red-400-rgb);
+    --color-warning-rgb: var(--color-orange-400-rgb);
+    --color-info-rgb: var(--color-gray-300-rgb);
+  }
+}
+
+/* Data attribute for manual theme switching */
+[data-color-scheme="dark"] {
+  /* RGB versions for opacity control (dark mode) */
+  --color-gray-400-rgb: 119, 124, 124;
+  --color-teal-300-rgb: 50, 184, 198;
+  --color-gray-300-rgb: 167, 169, 169;
+  --color-gray-200-rgb: 245, 245, 245;
+
+  /* Colorful background palette - Dark Mode */
+  --color-bg-1: rgba(29, 78, 216, 0.15); /* Dark blue */
+  --color-bg-2: rgba(180, 83, 9, 0.15); /* Dark yellow */
+  --color-bg-3: rgba(21, 128, 61, 0.15); /* Dark green */
+  --color-bg-4: rgba(185, 28, 28, 0.15); /* Dark red */
+  --color-bg-5: rgba(107, 33, 168, 0.15); /* Dark purple */
+  --color-bg-6: rgba(194, 65, 12, 0.15); /* Dark orange */
+  --color-bg-7: rgba(190, 24, 93, 0.15); /* Dark pink */
+  --color-bg-8: rgba(8, 145, 178, 0.15); /* Dark cyan */
+
+  /* Semantic Color Tokens (Dark Mode) */
+  --color-background: var(--color-charcoal-700);
+  --color-surface: var(--color-charcoal-800);
+  --color-text: var(--color-gray-200);
+  --color-text-secondary: rgba(var(--color-gray-300-rgb), 0.7);
+  --color-primary: var(--color-teal-300);
+  --color-primary-hover: var(--color-teal-400);
+  --color-primary-active: var(--color-teal-800);
+  --color-secondary: rgba(var(--color-gray-400-rgb), 0.15);
+  --color-secondary-hover: rgba(var(--color-gray-400-rgb), 0.25);
+  --color-secondary-active: rgba(var(--color-gray-400-rgb), 0.3);
+  --color-border: rgba(var(--color-gray-400-rgb), 0.3);
+  --color-error: var(--color-red-400);
+  --color-success: var(--color-teal-300);
+  --color-warning: var(--color-orange-400);
+  --color-info: var(--color-gray-300);
+  --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
+  --color-btn-primary-text: var(--color-slate-900);
+  --color-card-border: rgba(var(--color-gray-400-rgb), 0.15);
+  --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
+  --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
+  --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
+
+  /* Common style patterns - updated for dark mode */
+  --focus-ring: 0 0 0 3px var(--color-focus-ring);
+  --focus-outline: 2px solid var(--color-primary);
+  --status-bg-opacity: 0.15;
+  --status-border-opacity: 0.25;
+  --select-caret-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23134252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  --select-caret-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+
+  /* RGB versions for dark mode */
+  --color-success-rgb: var(--color-teal-300-rgb);
+  --color-error-rgb: var(--color-red-400-rgb);
+  --color-warning-rgb: var(--color-orange-400-rgb);
+  --color-info-rgb: var(--color-gray-300-rgb);
+}
+
+[data-color-scheme="light"] {
+  /* RGB versions for opacity control (light mode) */
+  --color-brown-600-rgb: 94, 82, 64;
+  --color-teal-500-rgb: 33, 128, 141;
+  --color-slate-900-rgb: 19, 52, 59;
+
+  /* Semantic Color Tokens (Light Mode) */
+  --color-background: var(--color-cream-50);
+  --color-surface: var(--color-cream-100);
+  --color-text: var(--color-slate-900);
+  --color-text-secondary: var(--color-slate-500);
+  --color-primary: var(--color-teal-500);
+  --color-primary-hover: var(--color-teal-600);
+  --color-primary-active: var(--color-teal-700);
+  --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+  --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+  --color-btn-primary-text: var(--color-cream-50);
+  --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+  --color-error: var(--color-red-500);
+  --color-success: var(--color-teal-500);
+  --color-warning: var(--color-orange-500);
+  --color-info: var(--color-slate-500);
+  --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+
+  /* RGB versions for light mode */
+  --color-success-rgb: var(--color-teal-500-rgb);
+  --color-error-rgb: var(--color-red-500-rgb);
+  --color-warning-rgb: var(--color-orange-500-rgb);
+  --color-info-rgb: var(--color-slate-500-rgb);
+}
+
+/* Base styles */
+html {
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  color: var(--color-text);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+h1 {
+  font-size: var(--font-size-4xl);
+}
+h2 {
+  font-size: var(--font-size-3xl);
+}
+h3 {
+  font-size: var(--font-size-2xl);
+}
+h4 {
+  font-size: var(--font-size-xl);
+}
+h5 {
+  font-size: var(--font-size-lg);
+}
+h6 {
+  font-size: var(--font-size-md);
+}
+
+p {
+  margin: 0 0 var(--space-16) 0;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+a:hover {
+  color: var(--color-primary-hover);
+}
+
+code,
+pre {
+  font-family: var(--font-family-mono);
+  font-size: calc(var(--font-size-base) * 0.95);
+  background-color: var(--color-secondary);
+  border-radius: var(--radius-sm);
+}
+
+code {
+  padding: var(--space-1) var(--space-4);
+}
+
+pre {
+  padding: var(--space-16);
+  margin: var(--space-16) 0;
+  overflow: auto;
+  border: 1px solid var(--color-border);
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-16);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+  border: none;
+  text-decoration: none;
+  position: relative;
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.btn--primary {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-hover);
+}
+
+.btn--primary:active {
+  background: var(--color-primary-active);
+}
+
+.btn--secondary {
+  background: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.btn--secondary:hover {
+  background: var(--color-secondary-hover);
+}
+
+.btn--secondary:active {
+  background: var(--color-secondary-active);
+}
+
+.btn--outline {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.btn--outline:hover {
+  background: var(--color-secondary);
+}
+
+.btn--sm {
+  padding: var(--space-4) var(--space-12);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-sm);
+}
+
+.btn--lg {
+  padding: var(--space-10) var(--space-20);
+  font-size: var(--font-size-lg);
+  border-radius: var(--radius-md);
+}
+
+.btn--full-width {
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Form elements */
+.form-control {
+  display: block;
+  width: 100%;
+  padding: var(--space-8) var(--space-12);
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+textarea.form-control {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+}
+
+select.form-control {
+  padding: var(--space-8) var(--space-12);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: var(--select-caret-light);
+  background-repeat: no-repeat;
+  background-position: right var(--space-12) center;
+  background-size: 16px;
+  padding-right: var(--space-32);
+}
+
+/* Add a dark mode specific caret */
+@media (prefers-color-scheme: dark) {
+  select.form-control {
+    background-image: var(--select-caret-dark);
+  }
+}
+
+/* Also handle data-color-scheme */
+[data-color-scheme="dark"] select.form-control {
+  background-image: var(--select-caret-dark);
+}
+
+[data-color-scheme="light"] select.form-control {
+  background-image: var(--select-caret-light);
+}
+
+.form-control:focus {
+  border-color: var(--color-primary);
+  outline: var(--focus-outline);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: var(--space-8);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+
+.form-group {
+  margin-bottom: var(--space-16);
+}
+
+/* Card component */
+.card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-card-border);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: box-shadow var(--duration-normal) var(--ease-standard);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card__body {
+  padding: var(--space-16);
+}
+
+.card__header,
+.card__footer {
+  padding: var(--space-16);
+  border-bottom: 1px solid var(--color-card-border-inner);
+}
+
+/* Status indicators - simplified with CSS variables */
+.status {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-6) var(--space-12);
+  border-radius: var(--radius-full);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+}
+
+.status--success {
+  background-color: rgba(
+    var(--color-success-rgb, 33, 128, 141),
+    var(--status-bg-opacity)
+  );
+  color: var(--color-success);
+  border: 1px solid
+    rgba(var(--color-success-rgb, 33, 128, 141), var(--status-border-opacity));
+}
+
+.status--error {
+  background-color: rgba(
+    var(--color-error-rgb, 192, 21, 47),
+    var(--status-bg-opacity)
+  );
+  color: var(--color-error);
+  border: 1px solid
+    rgba(var(--color-error-rgb, 192, 21, 47), var(--status-border-opacity));
+}
+
+.status--warning {
+  background-color: rgba(
+    var(--color-warning-rgb, 168, 75, 47),
+    var(--status-bg-opacity)
+  );
+  color: var(--color-warning);
+  border: 1px solid
+    rgba(var(--color-warning-rgb, 168, 75, 47), var(--status-border-opacity));
+}
+
+.status--info {
+  background-color: rgba(
+    var(--color-info-rgb, 98, 108, 113),
+    var(--status-bg-opacity)
+  );
+  color: var(--color-info);
+  border: 1px solid
+    rgba(var(--color-info-rgb, 98, 108, 113), var(--status-border-opacity));
+}
+
+/* Container layout */
+.container {
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: var(--space-16);
+  padding-left: var(--space-16);
+}
+
+@media (min-width: 640px) {
+  .container {
+    max-width: var(--container-sm);
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    max-width: var(--container-md);
+  }
+}
+@media (min-width: 1024px) {
+  .container {
+    max-width: var(--container-lg);
+  }
+}
+@media (min-width: 1280px) {
+  .container {
+    max-width: var(--container-xl);
+  }
+}
+
+/* Utility classes */
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.gap-4 {
+  gap: var(--space-4);
+}
+.gap-8 {
+  gap: var(--space-8);
+}
+.gap-16 {
+  gap: var(--space-16);
+}
+
+.m-0 {
+  margin: 0;
+}
+.mt-8 {
+  margin-top: var(--space-8);
+}
+.mb-8 {
+  margin-bottom: var(--space-8);
+}
+.mx-8 {
+  margin-left: var(--space-8);
+  margin-right: var(--space-8);
+}
+.my-8 {
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+.p-0 {
+  padding: 0;
+}
+.py-8 {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-8);
+}
+.px-8 {
+  padding-left: var(--space-8);
+  padding-right: var(--space-8);
+}
+.py-16 {
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-16);
+}
+.px-16 {
+  padding-left: var(--space-16);
+  padding-right: var(--space-16);
+}
+
+.block {
+  display: block;
+}
+.hidden {
+  display: none;
+}
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: 2px;
+}
+
+/* Dark mode specifics */
+[data-color-scheme="dark"] .btn--outline {
+  border: 1px solid var(--color-border-secondary);
+}
+
+@font-face {
+  font-family: 'FKGroteskNeue';
+  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
+    format('woff2');
+}
+
+/* END PERPLEXITY DESIGN SYSTEM */
+/* Enhanced styles for EcoLearn Pro Dashboard */
+
+/* Header Enhancements */
+.header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-16) var(--space-24);
+  max-width: var(--container-xl);
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.teacher-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+}
+
+/* Enhanced Notification Center */
+.notification-center {
+  position: relative;
+}
+
+.notification-bell {
+  background: none;
+  border: none;
+  font-size: var(--font-size-xl);
+  cursor: pointer;
+  padding: var(--space-8);
+  border-radius: var(--radius-full);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+  color: var(--color-text-secondary);
+  position: relative;
+}
+
+.notification-bell:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.notification-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  background: var(--color-error);
+  color: var(--color-white);
+  font-size: var(--font-size-xs);
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+  min-width: 18px;
+  text-align: center;
+}
+
+.notification-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  box-shadow: var(--shadow-lg);
+  min-width: 300px;
+  z-index: 1000;
+  margin-top: var(--space-8);
+}
+
+.notification-dropdown.hidden {
+  display: none;
+}
+
+.notification-header {
+  padding: var(--space-12) var(--space-16);
+  border-bottom: 1px solid var(--color-border);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.notification-item {
+  padding: var(--space-12) var(--space-16);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.notification-item:hover {
+  background: var(--color-bg-1);
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-icon {
+  font-size: var(--font-size-base);
+}
+
+.notification-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+/* Enhanced Profile Info */
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.profile-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.profile-credentials {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.profile-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--color-primary);
+}
+
+/* Enhanced Navigation */
+.main-nav {
+  display: flex;
+  gap: var(--space-2);
+  padding: 0 var(--space-24);
+  background: var(--color-bg-1);
+  border-top: 1px solid var(--color-border);
+  overflow-x: auto;
+}
+
+.nav-tab {
+  background: none;
+  border: none;
+  padding: var(--space-12) var(--space-16);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all var(--duration-fast) var(--ease-standard);
+  white-space: nowrap;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.nav-tab:hover {
+  color: var(--color-text);
+  background-color: var(--color-secondary);
+}
+
+.nav-tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  background-color: var(--color-surface);
+}
+
+/* Main Content */
+.main-content {
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  padding: var(--space-24);
+}
+
+.content-section {
+  display: none;
+}
+
+.content-section.active {
+  display: block;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-24);
+  flex-wrap: wrap;
+  gap: var(--space-16);
+}
+
+.section-header h2 {
+  color: var(--color-text);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-semibold);
+}
+
+.section-actions, .dashboard-actions {
+  display: flex;
+  gap: var(--space-12);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  min-width: 200px;
+}
+
+.filter-select {
+  min-width: 150px;
+}
+
+/* Enhanced Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-20);
+  margin-bottom: var(--space-32);
+}
+
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  display: flex;
+  align-items: center;
+  gap: var(--space-16);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-normal) var(--ease-standard);
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--color-primary);
+}
+
+.stat-card--primary::before { background: var(--color-primary); }
+.stat-card--success::before { background: var(--color-success); }
+.stat-card--warning::before { background: var(--color-warning); }
+.stat-card--info::before { background: var(--color-info); }
+.stat-card--purple::before { background: #9C27B0; }
+.stat-card--teal::before { background: var(--color-teal-400); }
+
+.stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  font-size: 2.5rem;
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-3);
+  border-radius: var(--radius-lg);
+  flex-shrink: 0;
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-info h3 {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-4);
+}
+
+.stat-value {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.stat-trend {
+  font-size: var(--font-size-xs);
+  color: var(--color-success);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-24);
+  margin-bottom: var(--space-32);
+}
+
+.dashboard-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  box-shadow: var(--shadow-sm);
+}
+
+.dashboard-card h3 {
+  margin-bottom: var(--space-16);
+  color: var(--color-text);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Activity Feed */
+.activity-feed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+  padding: var(--space-12);
+  border-radius: var(--radius-base);
+  background: var(--color-bg-1);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.activity-item:hover {
+  background: var(--color-bg-2);
+}
+
+.activity-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-base);
+  flex-shrink: 0;
+  color: var(--color-white);
+}
+
+.activity-badge { background: var(--color-warning); }
+.activity-task { background: var(--color-primary); }
+.activity-game { background: var(--color-success); }
+.activity-quiz { background: var(--color-info); }
+
+.activity-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  line-height: 1.4;
+  margin-bottom: var(--space-4);
+}
+
+.activity-time {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* Leaderboard */
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.leaderboard-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  padding: var(--space-8);
+  border-radius: var(--radius-base);
+  background: var(--color-bg-1);
+}
+
+.leaderboard-rank {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  width: 24px;
+  text-align: center;
+}
+
+.leaderboard-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.leaderboard-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.leaderboard-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.leaderboard-points {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+/* Enhanced Quick Actions */
+.quick-actions-enhanced {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+}
+
+.quick-actions-enhanced h3 {
+  margin-bottom: var(--space-20);
+  color: var(--color-text);
+}
+
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-16);
+}
+
+.action-card {
+  background: var(--color-bg-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-base);
+  padding: var(--space-20);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-12);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-standard);
+  text-align: center;
+}
+
+.action-card:hover {
+  background: var(--color-secondary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.action-icon {
+  font-size: 2rem;
+  color: var(--color-primary);
+}
+
+.action-text {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+/* Enhanced Data Table */
+.data-table-container {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-sm);
+}
+
+.data-table th {
+  background: var(--color-bg-1);
+  padding: var(--space-16);
+  text-align: left;
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.data-table td {
+  padding: var(--space-12) var(--space-16);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+  background: var(--color-bg-1);
+}
+
+.student-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+}
+
+.student-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.student-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.student-id {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.badge-count, .level-badge {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+  padding: var(--space-2) var(--space-8);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+}
+
+.completion-rate {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.progress-bar {
+  width: 80px;
+  height: 8px;
+  background: var(--color-secondary);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width var(--duration-normal) var(--ease-standard);
+}
+
+.performance-trend {
+  padding: var(--space-2) var(--space-8);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.trend-improving {
+  background: var(--color-bg-3);
+  color: var(--color-success);
+}
+
+.trend-stable {
+  background: var(--color-bg-2);
+  color: var(--color-warning);
+}
+
+.trend-excellent {
+  background: var(--color-bg-5);
+  color: var(--color-primary);
+}
+
+.recent-activity-cell {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action-buttons-small {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.btn--xs {
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--font-size-xs);
+  border-radius: var(--radius-sm);
+}
+
+/* Categories Grid */
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-20);
+}
+
+.category-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  transition: all var(--duration-normal) var(--ease-standard);
+  position: relative;
+  overflow: hidden;
+}
+
+.category-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-teal-400) 100%);
+}
+
+.category-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-16);
+}
+
+.category-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.category-status {
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  background: var(--color-bg-3);
+  color: var(--color-success);
+}
+
+.category-levels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  margin-bottom: var(--space-12);
+}
+
+.level-tag {
+  background: var(--color-bg-1);
+  color: var(--color-text);
+  padding: var(--space-2) var(--space-8);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+}
+
+.category-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-16);
+  margin-bottom: var(--space-16);
+}
+
+.category-stat {
+  text-align: center;
+}
+
+.category-stat-value {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+}
+
+.category-stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.category-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+  margin-bottom: var(--space-16);
+}
+
+.skill-tag {
+  background: var(--color-bg-6);
+  color: var(--color-text);
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+}
+
+.category-actions {
+  display: flex;
+  gap: var(--space-8);
+}
+
+/* Task Levels */
+.task-levels-tabs {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-24);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.level-tab {
+  background: none;
+  border: none;
+  padding: var(--space-12) var(--space-16);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.level-tab:hover {
+  color: var(--color-text);
+}
+
+.level-tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+/* Tasks Grid */
+.tasks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--space-20);
+}
+
+.task-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-normal) var(--ease-standard);
+}
+
+.task-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-12);
+}
+
+.task-title {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin: 0;
+  font-size: var(--font-size-lg);
+}
+
+.task-level {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+  padding: var(--space-2) var(--space-8);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.task-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-8);
+  margin-bottom: var(--space-16);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.task-category {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+.task-difficulty {
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.difficulty-basic { background: var(--color-bg-3); color: var(--color-success); }
+.difficulty-intermediate { background: var(--color-bg-2); color: var(--color-warning); }
+.difficulty-advanced { background: var(--color-bg-4); color: var(--color-error); }
+
+.task-actions {
+  display: flex;
+  gap: var(--space-8);
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Badge Gallery */
+.badge-gallery {
+  margin-bottom: var(--space-32);
+}
+
+.badge-gallery h3 {
+  margin-bottom: var(--space-16);
+  color: var(--color-text);
+}
+
+.badges-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-16);
+  margin-bottom: var(--space-24);
+}
+
+.badge-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-16);
+  text-align: center;
+  transition: all var(--duration-normal) var(--ease-standard);
+  position: relative;
+}
+
+.badge-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.badge-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-8);
+}
+
+.badge-name {
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+}
+
+.badge-description {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-8);
+}
+
+.badge-tier {
+  position: absolute;
+  top: var(--space-8);
+  right: var(--space-8);
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.tier-bronze { background: #CD7F32; color: white; }
+.tier-silver { background: #C0C0C0; color: black; }
+.tier-gold { background: #FFD700; color: black; }
+.tier-platinum { background: #E5E4E2; color: black; }
+.tier-diamond { background: #B9F2FF; color: black; }
+
+.badge-earned-by {
+  font-size: var(--font-size-xs);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Verification Queue */
+.verification-queue h3 {
+  margin-bottom: var(--space-16);
+  color: var(--color-text);
+}
+
+.verification-stats {
+  display: flex;
+  gap: var(--space-24);
+  margin-bottom: var(--space-16);
+}
+
+.verification-stat {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+.verification-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.verification-item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-base);
+  padding: var(--space-16);
+  display: flex;
+  justify-content: between;
+  align-items: center;
+  gap: var(--space-16);
+}
+
+.verification-info {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-16);
+  align-items: center;
+}
+
+.verification-student {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+
+.verification-task {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.verification-date {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.verification-actions {
+  display: flex;
+  gap: var(--space-8);
+  flex-shrink: 0;
+}
+
+/* Game Analytics Enhancements */
+.game-analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: var(--space-24);
+}
+
+.game-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  box-shadow: var(--shadow-sm);
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-16);
+}
+
+.game-header h3 {
+  margin: 0;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  font-size: var(--font-size-lg);
+}
+
+.game-status {
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  background: var(--color-bg-3);
+  color: var(--color-success);
+}
+
+.game-stats-detailed {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-16);
+  margin-bottom: var(--space-16);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.stat-value {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+}
+
+.game-leaderboard {
+  margin-top: var(--space-16);
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--color-border);
+}
+
+.game-leaderboard h4 {
+  margin-bottom: var(--space-12);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+}
+
+.game-player {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.game-player:last-child {
+  border-bottom: none;
+}
+
+.game-player-name {
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+.game-player-score {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-primary);
+}
+
+/* Quiz Levels */
+.quiz-levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-20);
+}
+
+.quiz-level-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-normal) var(--ease-standard);
+}
+
+.quiz-level-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.quiz-level-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-12);
+}
+
+.quiz-level-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.quiz-level-number {
+  background: var(--color-primary);
+  color: var(--color-btn-primary-text);
+  padding: var(--space-4) var(--space-8);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.quiz-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-12);
+  margin-bottom: var(--space-16);
+}
+
+.quiz-categories {
+  margin-bottom: var(--space-16);
+}
+
+.quiz-categories h5 {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-8);
+}
+
+.category-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-6);
+}
+
+.category-tag {
+  background: var(--color-bg-1);
+  color: var(--color-text);
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+}
+
+/* Reports Grid */
+.reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-24);
+}
+
+.report-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--duration-normal) var(--ease-standard);
+}
+
+.report-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.report-icon {
+  font-size: 3rem;
+  margin-bottom: var(--space-16);
+}
+
+.report-card h3 {
+  margin-bottom: var(--space-12);
+  color: var(--color-text);
+}
+
+.report-card p {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-20);
+  font-size: var(--font-size-sm);
+}
+
+/* Settings Enhancements */
+.settings-tabs {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-24);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.settings-tab {
+  background: none;
+  border: none;
+  padding: var(--space-12) var(--space-16);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.settings-tab:hover {
+  color: var(--color-text);
+}
+
+.settings-tab.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.settings-tab-content {
+  display: none;
+}
+
+.settings-tab-content.active {
+  display: block;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--space-24);
+}
+
+.settings-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-24);
+  box-shadow: var(--shadow-sm);
+}
+
+.settings-card h3 {
+  margin-bottom: var(--space-20);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+}
+
+/* Modal Enhancements */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: auto;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-card-border);
+}
+
+.modal-content--large {
+  max-width: 900px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-20);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: var(--color-text);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: var(--font-size-xl);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  padding: var(--space-4);
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast) var(--ease-standard);
+}
+
+.modal-close:hover {
+  color: var(--color-text);
+  background: var(--color-secondary);
+}
+
+.modal-body {
+  padding: var(--space-20);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-12);
+  margin-top: var(--space-20);
+  padding-top: var(--space-16);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Form Enhancements */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-16);
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  cursor: pointer;
+  color: var(--color-text);
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .game-analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    padding: var(--space-12) var(--space-16);
+  }
+  
+  .main-nav {
+    padding: 0 var(--space-16);
+    overflow-x: auto;
+  }
+  
+  .nav-tab {
+    white-space: nowrap;
+    padding: var(--space-8) var(--space-12);
+    font-size: var(--font-size-xs);
+  }
+  
+  .main-content {
+    padding: var(--space-16);
+  }
+  
+  .section-header {
+    flex-direction: column;
+    gap: var(--space-16);
+    align-items: flex-start;
+  }
+  
+  .section-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  
+  .search-input {
+    min-width: auto;
+    flex: 1;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .data-table-container {
+    overflow-x: auto;
+  }
+  
+  .data-table {
+    min-width: 1000px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: var(--space-16);
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .notification-dropdown {
+    right: -50px;
+    width: 280px;
+  }
+  
+  .profile-details {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .action-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .categories-grid,
+  .tasks-grid,
+  .badges-grid,
+  .quiz-levels-grid,
+  .reports-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .game-stats-detailed {
+    grid-template-columns: 1fr;
+  }
+  
+  .verification-info {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+}</style>
+</head>
+<body>
+    <!-- Enhanced Navigation Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <h1 class="logo">{{ user.username }} Dashboard</h1>
+            </div>
+            <div class="teacher-profile">
+                <div class="notification-center">
+                    <button class="notification-bell" onclick="toggleNotifications()">
+                        🔔
+                        <span class="notification-badge">3</span>
+                    </button>
+                    <div class="notification-dropdown hidden" id="notificationDropdown">
+                        <div class="notification-header">Notifications</div>
+                        <div class="notification-item">
+                            <span class="notification-icon">✅</span>
+                            <span class="notification-text">3 badge verifications pending</span>
+                        </div>
+                        <div class="notification-item">
+                            <span class="notification-icon">🎉</span>
+                            <span class="notification-text">Carol Davis earned Eco Warrior badge</span>
+                        </div>
+                        <div class="notification-item">
+                            <span class="notification-icon">📊</span>
+                            <span class="notification-text">Weekly report ready</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='20' fill='%2321808D'/%3E%3Ctext x='20' y='25' text-anchor='middle' fill='white' font-size='14'%3EJD%3C/text%3E%3C/svg%3E" alt="Teacher" class="profile-avatar">
+                    <div class="profile-details">
+                        <span class="profile-name">{{ user.username }}</span>
+                        <span class="profile-credentials">Environmental Science PhD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="main-nav">
+            <button class="nav-tab active" data-section="dashboard">📊 Dashboard</button>
+            <button class="nav-tab" data-section="students">👥 Student Profiles</button>
+            <button class="nav-tab" data-section="categories">📁 Category Manager</button>
+            <button class="nav-tab" data-section="tasks">📋 Task Builder</button>
+            <button class="nav-tab" data-section="badges">🏆 Badge Verification</button>
+            <button class="nav-tab" data-section="analytics">🎮 Game Analytics</button>
+            <button class="nav-tab" data-section="quizzes">❓ Quiz Levels</button>
+            <button class="nav-tab" data-section="reports">📈 Reports</button>
+            <button class="nav-tab" data-section="settings">⚙️ Settings</button>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- Enhanced Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+            <div class="section-header">
+                <h2>Dashboard Overview</h2>
+                <div class="dashboard-actions">
+                    <button class="btn btn--primary" onclick="refreshDashboard()">🔄 Refresh</button>
+                    <button class="btn btn--secondary" onclick="exportData()">📤 Export Data</button>
+                </div>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card stat-card--primary">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <h3>Total Students</h3>
+                        <div class="stat-value" id="totalStudents">5</div>
+                        <div class="stat-trend">+2 this week</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-card--success">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-info">
+                        <h3>Active Tasks</h3>
+                        <div class="stat-value" id="activeTasks">6</div>
+                        <div class="stat-trend">+3 new tasks</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-card--warning">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-info">
+                        <h3>Pending Verifications</h3>
+                        <div class="stat-value" id="pendingVerifications">3</div>
+                        <div class="stat-trend">Needs attention</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-card--info">
+                    <div class="stat-icon">🌍</div>
+                    <div class="stat-info">
+                        <h3>Total Eco Points</h3>
+                        <div class="stat-value" id="totalEcoPoints">18,180</div>
+                        <div class="stat-trend">+1,250 today</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-card--purple">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-info">
+                        <h3>Categories Active</h3>
+                        <div class="stat-value" id="categoriesActive">6</div>
+                        <div class="stat-trend">All functional</div>
+                    </div>
+                </div>
+                <div class="stat-card stat-card--teal">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-info">
+                        <h3>Avg Engagement</h3>
+                        <div class="stat-value" id="avgEngagement">87%</div>
+                        <div class="stat-trend">+5% this month</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-card">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-feed" id="activityFeed"></div>
+                </div>
+                
+                <div class="dashboard-card">
+                    <h3>Top Performers</h3>
+                    <div class="leaderboard" id="leaderboard"></div>
+                </div>
+            </div>
+
+            <div class="quick-actions-enhanced">
+                <h3>Quick Actions</h3>
+                <div class="action-grid">
+                    <button class="action-card" onclick="openTaskModal()">
+                        <div class="action-icon">➕</div>
+                        <div class="action-text">Add New Task</div>
+                    </button>
+                    <button class="action-card" onclick="openCategoryModal()">
+                        <div class="action-icon">📁</div>
+                        <div class="action-text">Create Category</div>
+                    </button>
+                    <button class="action-card" onclick="showBadgeVerifications()">
+                        <div class="action-icon">✅</div>
+                        <div class="action-text">Verify Badges</div>
+                    </button>
+                    <button class="action-card" onclick="createQuiz()">
+                        <div class="action-icon">❓</div>
+                        <div class="action-text">Create Quiz</div>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Students Section -->
+        <section id="students" class="content-section">
+            <div class="section-header">
+                <h2>Student Profiles & Management</h2>
+                <div class="section-actions">
+                    <input type="text" placeholder="Search students..." class="form-control search-input" id="studentSearch">
+                    <select class="form-control filter-select" id="classFilter">
+                        <option value="">All Classes</option>
+                        <option value="Grade 9A">Grade 9A</option>
+                        <option value="Grade 9B">Grade 9B</option>
+                        <option value="Grade 10A">Grade 10A</option>
+                        <option value="Grade 10B">Grade 10B</option>
+                    </select>
+                    <select class="form-control filter-select" id="performanceFilter">
+                        <option value="">All Performance</option>
+                        <option value="excellent">Excellent (90%+)</option>
+                        <option value="good">Good (75-89%)</option>
+                        <option value="average">Average (60-74%)</option>
+                        <option value="needs-improvement">Needs Improvement (<60%)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="data-table-container">
+                <table class="data-table" id="studentsTable">
+                    <thead>
+                        <tr>
+                            <th>Photo</th>
+                            <th>Name & ID</th>
+                            <th>Class</th>
+                            <th>Eco Points</th>
+                            <th>Badge Count</th>
+                            <th>Level</th>
+                            <th>Completion %</th>
+                            <th>Skills Mastered</th>
+                            <th>Performance Trend</th>
+                            <th>Recent Activity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentsTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Category Management Section -->
+        <section id="categories" class="content-section">
+            <div class="section-header">
+                <h2>Category Management System</h2>
+                <button class="btn btn--primary" onclick="openCategoryModal()">➕ Add New Category</button>
+            </div>
+
+            <div class="categories-grid" id="categoriesGrid"></div>
+        </section>
+
+        <!-- Enhanced Task Builder Section -->
+        <section id="tasks" class="content-section">
+            <div class="section-header">
+                <h2>Advanced Task Builder</h2>
+                <div class="section-actions">
+                    <button class="btn btn--primary" onclick="openTaskModal()">➕ Create Task</button>
+                    <button class="btn btn--secondary" onclick="showTaskTemplates()">📋 Templates</button>
+                </div>
+            </div>
+
+            <div class="task-levels-tabs">
+                <button class="level-tab active" data-level="all">All Tasks</button>
+                <button class="level-tab" data-level="1">Level 1 (Basic)</button>
+                <button class="level-tab" data-level="2">Level 2 (Intermediate)</button>
+                <button class="level-tab" data-level="3">Level 3 (Advanced)</button>
+            </div>
+
+            <div class="tasks-grid" id="tasksGrid"></div>
+        </section>
+
+        <!-- Badge Verification Section -->
+        <section id="badges" class="content-section">
+            <div class="section-header">
+                <h2>Badge Verification Center</h2>
+                <div class="verification-stats">
+                    <span class="verification-stat">
+                        <span class="stat-label">Pending:</span>
+                        <span class="stat-value" id="pendingCount">3</span>
+                    </span>
+                    <span class="verification-stat">
+                        <span class="stat-label">Approved Today:</span>
+                        <span class="stat-value" id="approvedToday">8</span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="badge-gallery">
+                <h3>Available Badges</h3>
+                <div class="badges-grid" id="badgesGrid"></div>
+            </div>
+
+            <div class="verification-queue">
+                <h3>Pending Verifications</h3>
+                <div class="verification-list" id="verificationList"></div>
+            </div>
+        </section>
+
+        <!-- Enhanced Game Analytics Section -->
+        <section id="analytics" class="content-section">
+            <div class="section-header">
+                <h2>Advanced Game Analytics</h2>
+                <div class="analytics-filters">
+                    <select class="form-control" id="timeRangeFilter">
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="quarter">This Quarter</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="game-analytics-grid">
+                <div class="game-card">
+                    <div class="game-header">
+                        <h3>🗑️ Trash Sorter Analytics</h3>
+                        <div class="game-status">Active</div>
+                    </div>
+                    <div class="game-stats-detailed">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Items Sorted</span>
+                            <span class="stat-value">25,430</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Accuracy Rate</span>
+                            <span class="stat-value">89%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Avg Completion Time</span>
+                            <span class="stat-value">42s</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Improvement Rate</span>
+                            <span class="stat-value">+15%</span>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 200px;">
+                        <canvas id="trashSorterChart"></canvas>
+                    </div>
+                    <div class="game-leaderboard">
+                        <h4>Top Players</h4>
+                        <div id="trashSorterLeaderboard"></div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-header">
+                        <h3>💧 Water Saver Tap Analytics</h3>
+                        <div class="game-status">Active</div>
+                    </div>
+                    <div class="game-stats-detailed">
+                        <div class="stat-item">
+                            <span class="stat-label">Virtual Water Saved</span>
+                            <span class="stat-value">4,250L</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Avg Reaction Time</span>
+                            <span class="stat-value">0.6s</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Levels Completed</span>
+                            <span class="stat-value">245</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Challenges Won</span>
+                            <span class="stat-value">89</span>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 200px;">
+                        <canvas id="waterSaverChart"></canvas>
+                    </div>
+                    <div class="game-leaderboard">
+                        <h4>Top Conservers</h4>
+                        <div id="waterSaverLeaderboard"></div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-header">
+                        <h3>🏃 Carbon Runner Analytics</h3>
+                        <div class="game-status">Active</div>
+                    </div>
+                    <div class="game-stats-detailed">
+                        <div class="stat-item">
+                            <span class="stat-label">Total Distance</span>
+                            <span class="stat-value">185,000m</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Green Energy Collected</span>
+                            <span class="stat-value">12,950</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Pollution Avoided</span>
+                            <span class="stat-value">890 units</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Knowledge Checkpoints</span>
+                            <span class="stat-value">445</span>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="position: relative; height: 200px;">
+                        <canvas id="carbonRunnerChart"></canvas>
+                    </div>
+                    <div class="game-leaderboard">
+                        <h4>Top Runners</h4>
+                        <div id="carbonRunnerLeaderboard"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quiz Levels Section -->
+        <section id="quizzes" class="content-section">
+            <div class="section-header">
+                <h2>Multi-Level Quiz System</h2>
+                <button class="btn btn--primary" onclick="openQuizModal()">➕ Create Quiz</button>
+            </div>
+
+            <div class="quiz-levels-grid" id="quizLevelsGrid"></div>
+        </section>
+
+        <!-- Enhanced Reports Section -->
+        <section id="reports" class="content-section">
+            <div class="section-header">
+                <h2>Comprehensive Reports</h2>
+                <div class="report-filters">
+                    <select class="form-control" id="reportType">
+                        <option value="all">All Reports</option>
+                        <option value="individual">Individual Performance</option>
+                        <option value="class">Class Analytics</option>
+                        <option value="game">Game Engagement</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-icon">📊</div>
+                    <h3>Individual Student Reports</h3>
+                    <p>Detailed performance analytics with graphs and progress tracking</p>
+                    <button class="btn btn--primary" onclick="generateIndividualReport()">Generate Report</button>
+                </div>
+                <div class="report-card">
+                    <div class="report-icon">👥</div>
+                    <h3>Class Comparison Analytics</h3>
+                    <p>Compare performance across different classes and grades</p>
+                    <button class="btn btn--primary" onclick="generateClassReport()">Generate Report</button>
+                </div>
+                <div class="report-card">
+                    <div class="report-icon">🎮</div>
+                    <h3>Game Engagement Analytics</h3>
+                    <p>Gaming activity correlation with learning outcomes</p>
+                    <button class="btn btn--primary" onclick="generateGameReport()">Generate Report</button>
+                </div>
+                <div class="report-card">
+                    <div class="report-icon">🏆</div>
+                    <h3>Achievement Certificates</h3>
+                    <p>Printable certificates for student achievements and milestones</p>
+                    <button class="btn btn--primary" onclick="generateCertificates()">Create Certificates</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Enhanced Settings Section -->
+        <section id="settings" class="content-section">
+            <div class="section-header">
+                <h2>Advanced Settings & Configuration</h2>
+            </div>
+
+            <div class="settings-tabs">
+                <button class="settings-tab active" data-tab="points">Point System</button>
+                <button class="settings-tab" data-tab="badges">Badge Criteria</button>
+                <button class="settings-tab" data-tab="notifications">Notifications</button>
+                <button class="settings-tab" data-tab="integrations">Integrations</button>
+            </div>
+
+            <div class="settings-content">
+                <div class="settings-tab-content active" id="pointsSettings">
+                    <div class="settings-grid">
+                        <div class="settings-card">
+                            <h3>Task Points Configuration</h3>
+                            <div class="form-group">
+                                <label class="form-label">Basic Task Points</label>
+                                <input type="number" class="form-control" value="50" id="basicTaskPoints">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Intermediate Task Points</label>
+                                <input type="number" class="form-control" value="150" id="intermediateTaskPoints">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Advanced Task Points</label>
+                                <input type="number" class="form-control" value="300" id="advancedTaskPoints">
+                            </div>
+                        </div>
+                        <div class="settings-card">
+                            <h3>Bonus Points</h3>
+                            <div class="form-group">
+                                <label class="form-label">Badge Completion Bonus</label>
+                                <input type="number" class="form-control" value="100" id="badgeBonus">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Perfect Score Bonus</label>
+                                <input type="number" class="form-control" value="25" id="perfectScoreBonus">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Student Detail Modal -->
+    <div id="studentModal" class="modal hidden">
+        <div class="modal-content modal-content--large">
+            <div class="modal-header">
+                <h3>Comprehensive Student Profile</h3>
+                <button class="modal-close" onclick="closeStudentModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="studentModalBody"></div>
+        </div>
+    </div>
+
+    <!-- Task Creation Modal -->
+    <div id="taskModal" class="modal hidden">
+        <div class="modal-content modal-content--large">
+            <div class="modal-header">
+                <h3>Advanced Task Builder</h3>
+                <button class="modal-close" onclick="closeTaskModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="taskForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Task Title</label>
+                            <input type="text" class="form-control" id="taskTitle" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Category</label>
+                            <select class="form-control" id="taskCategory" required>
+                                <option value="">Select Category</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" id="taskDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Difficulty Level</label>
+                            <select class="form-control" id="taskDifficulty">
+                                <option value="Basic">Basic</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                                <option value="Expert">Expert</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Time Limit (days)</label>
+                            <input type="number" class="form-control" id="taskTimeLimit" value="7">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Point Value</label>
+                            <input type="number" class="form-control" id="taskPoints" value="100">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Verification Type</label>
+                            <select class="form-control" id="taskVerification">
+                                <option value="photo">Photo</option>
+                                <option value="video">Video</option>
+                                <option value="document">Document</option>
+                                <option value="quiz">Quiz</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn--secondary" onclick="closeTaskModal()">Cancel</button>
+                        <button type="submit" class="btn btn--primary">Create Task</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div id="categoryModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Category Management</h3>
+                <button class="modal-close" onclick="closeCategoryModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <div class="form-group">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="categoryName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Skill Tags (comma separated)</label>
+                        <input type="text" class="form-control" id="categorySkills" placeholder="e.g., analysis, conservation, research">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Available Levels</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" value="Basic" class="level-checkbox"> Basic
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" value="Intermediate" class="level-checkbox"> Intermediate
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" value="Advanced" class="level-checkbox"> Advanced
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" value="Expert" class="level-checkbox"> Expert
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn--secondary" onclick="closeCategoryModal()">Cancel</button>
+                        <button type="submit" class="btn btn--primary">Save Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

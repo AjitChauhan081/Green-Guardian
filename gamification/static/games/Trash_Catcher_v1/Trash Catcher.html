@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trash Catcher</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+
+  #canvas {
+    display: block;
+    max-width: 90vw;
+    max-height: 70vh;
+    border: 2px solid #32f0e3;
+    border-radius: 12px;
+    margin-bottom: 20px;
+  }
+
+  #home-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #32f0e3;
+    color: #000;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: 0.2s;
+  }
+
+  #home-button:hover {
+    background-color: #1ab4b0;
+  }
+
+  /* Status overlay */
+  #status {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(36,36,36,0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    z-index: 10;
+  }
+
+  #status-splash {
+    max-width: 100%;
+    max-height: 100%;
+    image-rendering: pixelated;
+  }
+
+  #status-progress {
+    width: 50%;
+    margin-top: 15px;
+  }
+
+  #status-notice {
+    margin-top: 15px;
+    background-color: #5b3943;
+    border-radius: 0.5rem;
+    border: 1px solid #9b3943;
+    color: #e0e0e0;
+    padding: 1rem;
+    text-align: center;
+  }
+</style>
+<link id="-gd-engine-icon" rel="icon" type="image/png" href="Trash Catcher.icon.png">
+<link rel="apple-touch-icon" href="Trash Catcher.apple-touch-icon.png"/>
+</head>
+<body>
+
+<!-- Godot Canvas -->
+<canvas id="canvas">Your browser does not support the canvas tag.</canvas>
+
+<!-- Home Button -->
+<a id="home-button" href="{% url 'home' %}">← Back to Dashboard</a>
+
+<!-- Status Overlay -->
+<div id="status">
+  <img id="status-splash" class="show-image--true fullsize--true use-filter--true" src="Trash Catcher.png" alt="">
+  <progress id="status-progress"></progress>
+  <div id="status-notice"></div>
+</div>
+
+<script src="Trash Catcher.js"></script>
+<script>
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":1,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":true,"executable":"Trash Catcher","experimentalVK":false,"fileSizes":{"Trash Catcher.pck":217444,"Trash Catcher.wasm":36160334},"focusCanvas":true,"gdextensionLibs":[],"godotPoolSize":10};
+const GODOT_THREADS_ENABLED = false;
+const engine = new Engine(GODOT_CONFIG);
+
+(function () {
+	const statusOverlay = document.getElementById('status');
+	const statusProgress = document.getElementById('status-progress');
+	const statusNotice = document.getElementById('status-notice');
+
+	let initializing = true;
+	let statusMode = '';
+
+	function setStatusMode(mode) {
+		if (statusMode === mode || !initializing) return;
+		if (mode === 'hidden') {
+			statusOverlay.remove();
+			initializing = false;
+			return;
+		}
+		statusOverlay.style.visibility = 'visible';
+		statusProgress.style.display = mode === 'progress' ? 'block' : 'none';
+		statusNotice.style.display = mode === 'notice' ? 'block' : 'none';
+		statusMode = mode;
+	}
+
+	function setStatusNotice(text) {
+		statusNotice.innerHTML = text.replace(/\n/g, '<br>');
+	}
+
+	function displayFailureNotice(err) {
+		console.error(err);
+		setStatusNotice(err instanceof Error ? err.message : (typeof err === 'string' ? err : 'An unknown error occurred.'));
+		setStatusMode('notice');
+		initializing = false;
+	}
+
+	const missing = Engine.getMissingFeatures({threads: GODOT_THREADS_ENABLED});
+	if (missing.length !== 0) {
+		displayFailureNotice('Error\nMissing required features:\n' + missing.join('\n'));
+	} else {
+		setStatusMode('progress');
+		engine.startGame({
+			'onProgress': function (current, total) {
+				if (current > 0 && total > 0) {
+					statusProgress.value = current;
+					statusProgress.max = total;
+				} else {
+					statusProgress.removeAttribute('value');
+					statusProgress.removeAttribute('max');
+				}
+			},
+		}).then(() => {
+			setStatusMode('hidden');
+		}, displayFailureNotice);
+	}
+}());
+</script>
+</body>
+</html>

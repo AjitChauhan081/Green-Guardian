@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco Scape - A Living Homepage</title>
+    <style>
+        :root {
+            /* Fallback colors */
+            --sky-top: #000033; --sky-bottom: #191970; --sun-color: #FFD700; --moon-color: #F0E68C;
+            --grass-color: #2F4F4F; --grass-darker: #003300; --mountain-color: #36454F;
+            --mountain-stroke: #1A2421; --tree-color: #3E2723; --leaf-color: #2E7D32;
+            --text-color: #E0E0E0; --button-bg: #66BB6A; --button-hover: #57a05a;
+            --cloud-color: rgba(200, 200, 220, 0.6); --glass-bg: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            transition: background 2s linear;
+        }
+
+        .scene-container {
+            position: absolute; bottom: 0; width: 100%; height: 100%;
+            display: flex; align-items: flex-end; justify-content: center;
+        }
+        
+        #celestial-container {
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: -1;
+        }
+        .celestial-body {
+            position: absolute; border-radius: 50%; 
+            transition: all 2s linear, opacity 2s linear, top 2s linear, left 2s linear;
+            opacity: 0;
+        }
+        #sun {
+            width: 80px; height: 80px; background: var(--sun-color);
+            box-shadow: 0 0 35px 5px var(--sun-color), 0 0 60px 10px rgba(255, 223, 100, 0.7), 0 0 80px 15px rgba(255, 165, 0, 0.5);
+        }
+        #moon {
+            width: 70px; height: 70px; background: var(--moon-color);
+            box-shadow: 0 0 20px var(--moon-color), 0 0 35px rgba(240, 230, 140, 0.5);
+        }
+        #moon-craters { position: absolute; width: 100%; height: 100%; border-radius: 50%; }
+        .crater { position: absolute; background: rgba(0,0,0,0.1); border-radius: 50%; }
+        .crater1 { width: 20px; height: 20px; top: 15px; left: 10px; }
+        .crater2 { width: 12px; height: 12px; top: 30px; right: 15px; }
+        .crater3 { width: 15px; height: 15px; bottom: 15px; left: 25px; }
+
+        #stars-container {
+            position: absolute; width: 100%; height: 100%; background: transparent;
+            opacity: 0; transition: opacity 2s linear; overflow: hidden;
+        }
+        .star {
+            position: absolute; background: white; border-radius: 50%;
+            animation: twinkle 2s infinite alternate;
+        }
+        @keyframes twinkle { from { opacity: 0.5; transform: scale(0.8); } to { opacity: 1; transform: scale(1.2); } }
+
+        #cloud-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; z-index: 1;
+        }
+        .cloud {
+            position: absolute; border-radius: 50%;
+            filter: blur(2px); animation: animateCloud linear infinite;
+            transition: background-color 2s linear;
+        }
+        .cloud::before, .cloud::after {
+            content: ''; position: absolute; border-radius: 50%;
+            background-color: inherit;
+        }
+        .cloud1 { width: 150px; height: 150px; top: 15%; animation-duration: 45s; animation-delay: -5s; }
+        .cloud1::before { width: 100px; height: 100px; top: 30px; left: -60px; }
+        .cloud1::after { width: 120px; height: 120px; top: 20px; right: -70px; }
+        .cloud2 { width: 100px; height: 100px; top: 30%; animation-duration: 30s; animation-delay: -15s; }
+        .cloud2::before { width: 70px; height: 70px; top: 20px; left: -40px; }
+        .cloud2::after { width: 80px; height: 80px; top: 15px; right: -50px; }
+        @keyframes animateCloud { from { transform: translateX(110vw); } to { transform: translateX(-300px); } }
+        
+        #weather-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; z-index: 15; pointer-events: none;
+        }
+        .raindrop {
+            position: absolute; width: 2px; height: 15px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.4));
+            animation: fall linear infinite;
+        }
+        @keyframes fall { to { transform: translateY(110vh); } }
+
+        .firefly {
+            position: absolute; width: 6px; height: 6px;
+            background-color: #FFFF00; border-radius: 50%;
+            box-shadow: 0 0 8px #FFFF00, 0 0 12px #FFFFE0;
+            animation: float 4s ease-in-out infinite, pulse 1.5s infinite alternate;
+            opacity: 0;
+            transition: opacity 2s linear;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-20px) translateX(10px); }
+        }
+        @keyframes pulse { from { opacity: 0.2; } to { opacity: 1; } }
+
+        .mountain-range { position: absolute; bottom: 80px; width: 100%; height: 300px; z-index: 0; }
+        .mountain-range-far { bottom: 120px; height: 350px; z-index: -1; filter: blur(1px); }
+        .mountain-svg path {
+            stroke-width: 2; stroke-linecap: round; transition: fill 2s linear, stroke 2s linear;
+        }
+        #grass-container {
+            position: absolute; bottom: 0; width: 100%; height: 120px;
+            z-index: 0; border-top-left-radius: 50% 20px; border-top-right-radius: 50% 20px;
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.1); transition: background 2s linear;
+        }
+        
+        .small-tree {
+            position: absolute;
+            bottom: 90px;
+            z-index: 0;
+            transform-origin: bottom center;
+            animation: gentleSway 15s ease-in-out infinite alternate;
+        }
+        @keyframes gentleSway { from { transform: rotate(-0.5deg); } to { transform: rotate(0.5deg); } }
+        .small-tree svg path {
+            stroke-width: 3;
+            stroke-linecap: round;
+            fill: none;
+            transition: stroke 2s linear;
+            stroke: var(--tree-color);
+        }
+         .small-tree svg .leaf {
+            transition: fill 2s linear;
+            fill: var(--leaf-color);
+        }
+
+        #butterfly-container {
+            position: absolute;
+            width: 100%; height: 100%;
+            top: 0; left: 0;
+            z-index: 9;
+            opacity: 0;
+            transition: opacity 2s linear;
+        }
+        .butterfly {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            animation: flutter 15s ease-in-out infinite;
+        }
+        .butterfly .wing {
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            background: orange;
+            border-radius: 10px 0;
+        }
+        .butterfly .left-wing {
+            animation: flapLeft 0.3s ease-in-out infinite alternate;
+            transform-origin: right center;
+        }
+        .butterfly .right-wing {
+            left: 15px;
+            animation: flapRight 0.3s ease-in-out infinite alternate;
+            transform-origin: left center;
+        }
+        @keyframes flutter {
+            0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+            25% { transform: translateX(50px) translateY(-30px) rotate(10deg); }
+            50% { transform: translateX(20px) translateY(20px) rotate(-5deg); }
+            75% { transform: translateX(-40px) translateY(-10px) rotate(5deg); }
+        }
+        @keyframes flapLeft { from { transform: rotateY(0deg); } to { transform: rotateY(80deg); } }
+        @keyframes flapRight { from { transform: rotateY(0deg); } to { transform: rotateY(-80deg); } }
+
+        #birds-container {
+            position: absolute; top: 20%; left: -200px;
+            width: 200px; z-index: 0;
+            opacity: 0;
+            transition: opacity 2s linear;
+        }
+        #birds-container.flying {
+             animation: flyAcross 25s linear forwards;
+        }
+        .bird-svg {
+            position: absolute;
+            width: 30px;
+            height: 20px;
+            fill: #333;
+            animation: flapBirdWings 0.5s linear infinite alternate;
+        }
+        @keyframes flyAcross {
+            from { left: -200px; }
+            to { left: 110vw; }
+        }
+        @keyframes flapBirdWings {
+            from { transform: translateY(0px); }
+            to { transform: translateY(5px); }
+        }
+
+        nav {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 11;
+            opacity: 0;
+            transform: translateY(-30px);
+            transition: opacity 1.5s ease-out 1s, transform 1.5s ease-out 1s;
+        }
+        .nav-left { display: flex; align-items: center; gap: 2.5rem; }
+        .logo { 
+            font-size: 1.8rem; font-weight: 700; text-decoration: none; 
+            color: var(--text-color); transition: color 2s linear;
+        }
+        .nav-links { list-style: none; margin: 0; padding: 0; display: flex; gap: 2rem; }
+        .nav-links a {
+            text-decoration: none; font-weight: 500; position: relative;
+            padding-bottom: 0.25rem; color: var(--text-color); transition: color 2s linear;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0;
+            height: 2px; background-color: var(--button-bg); transition: width 0.3s ease-out;
+        }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-actions { display: flex; align-items: center; gap: 1rem; }
+        .nav-button {
+            text-decoration: none; padding: 0.6rem 1.2rem; border-radius: 8px;
+            font-weight: 500; transition: all 0.3s ease; border: 1px solid transparent;
+        }
+        .nav-button.login { 
+            color: var(--text-color); transition: color 2s linear;
+        }
+        .nav-button.login:hover {
+             border-color: var(--button-bg);
+        }
+        .nav-button.signup {
+            background-color: var(--button-bg); color: white;
+        }
+         .nav-button.signup:hover {
+            background-color: var(--button-hover); transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .main-ui-container {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
+            width: 90%; max-width: 600px;
+        }
+
+        .info-card {
+            text-align: center; padding: 2.5rem; width: 100%;
+            background: var(--glass-bg); backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px); border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            color: var(--text-color);
+            opacity: 0; transform: translateY(50px);
+            transition: opacity 1.5s ease-out 1.5s, transform 1.5s ease-out 1.5s, color 2s linear, background 2s linear;
+        }
+        .info-card h1 { font-size: 2.8rem; margin: 0 0 1rem 0; font-weight: 700; }
+        .info-card p { font-size: 1.1rem; margin: 0 auto 1.5rem auto; }
+        
+        .status-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            width: 100%; margin-bottom: 1rem;
+        }
+        .status-widget { font-weight: 500; font-size: 1.1rem; }
+        
+        .controls-container {
+            display: flex; justify-content: center; gap: 15px; align-items: center;
+        }
+        .control-button {
+            padding: 0.8rem 1.5rem; border: none; border-radius: 10px;
+            background: var(--button-bg); color: white; font-size: 1rem;
+            font-weight: 500; cursor: pointer; text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .control-button:hover { background-color: var(--button-hover); transform: translateY(-3px); }
+
+        .toggle-switch {
+            position: relative; display: inline-block; width: 60px; height: 34px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #ccc; transition: .4s; border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute; content: ""; height: 26px; width: 26px; left: 4px; bottom: 4px;
+            background-color: white; transition: .4s; border-radius: 50%;
+        }
+        input:checked + .slider { background-color: #2196F3; }
+        input:checked + .slider:before { transform: translateX(26px); }
+
+        .visible { opacity: 1; transform: translateY(0); }
+
+        /* Puzzle Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .puzzle-container {
+            padding: 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+            color: var(--text-color);
+            position: relative;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease-in-out;
+            max-width: 90vw;
+        }
+        .modal-overlay.visible .puzzle-container {
+            transform: scale(1);
+        }
+        .close-button {
+            position: absolute;
+            top: 15px; right: 15px;
+            background: transparent;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-color);
+            cursor: pointer;
+            line-height: 1;
+        }
+        .puzzle-grid {
+            display: grid;
+            gap: 10px;
+            margin: 1.5rem 0;
+            perspective: 1000px;
+        }
+        .card {
+            width: 70px; height: 70px;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+        .card.matched {
+            opacity: 0.5;
+            cursor: default;
+        }
+        .card-face {
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2rem;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+        .card-front {
+            background-color: var(--button-bg);
+        }
+        .card-back {
+            background-color: rgba(255,255,255,0.2);
+            transform: rotateY(180deg);
+        }
+        .puzzle-header {
+             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        .puzzle-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            margin-top: 1rem;
+        }
+        #reset-puzzle, #next-level-button {
+            padding: 0.5rem 1rem; border: none; border-radius: 8px;
+            background: var(--button-bg); color: white;
+            cursor: pointer; transition: background-color 0.3s;
+        }
+        #reset-puzzle:hover, #next-level-button:hover {
+             background-color: var(--button-hover);
+        }
+        #puzzle-message-area {
+            margin-top: 1rem;
+            min-height: 50px;
+        }
+        .hidden { display: none; }
+
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <h1 class="logo">Green Gardian</h1>
+            <ul class="nav-links">
+                <li><a href="#"></a></li>
+                <li><a href="#"></a></li>
+                <li><a href="#" id="puzzle-link"></a></li>
+            </ul>
+        </div>
+        <div class="nav-actions">
+            <a href="{% url 'login' %}" class="nav-button login">Login</a>
+            <a href="{% url 'signup' %}" class="nav-button signup">Sign Up</a>
+        </div>
+    </nav>
+
+    <div class="scene-container">
+        <div id="celestial-container">
+            <div id="sun" class="celestial-body"></div>
+            <div id="moon" class="celestial-body"><div id="moon-craters"><div class="crater crater1"></div><div class="crater crater2"></div><div class="crater crater3"></div></div></div>
+        </div>
+        <div id="stars-container"></div>
+        <div id="birds-container"></div>
+        <div id="cloud-container"><div class="cloud cloud1"></div><div class="cloud cloud2"></div></div>
+        <div id="weather-container"></div>
+        <div id="butterfly-container"></div>
+
+        <div class="mountain-range mountain-range-far"><svg class="mountain-svg" width="100%" height="100%" viewBox="0 0 1000 350" preserveAspectRatio="none"><path d="M0 350 L0 280 Q 150 200, 300 250 T 600 220 T 850 260 L 1000 240 L 1000 350 Z" /></svg></div>
+        <div class="mountain-range"><svg class="mountain-svg" width="100%" height="100%" viewBox="0 0 1000 300" preserveAspectRatio="none"><path d="M0 300 L0 150 C150 100, 200 50, 300 120 S400 100, 500 80 C600 60, 700 150, 800 130 S950 180, 1000 160 L1000 300 Z" /></svg></div>
+        
+        <div id="small-trees-container"></div>
+        <div id="firefly-container"></div>
+        <div id="grass-container"></div>
+    </div>
+
+    <div class="main-ui-container">
+        <div id="info-card" class="info-card">
+            <div class="status-bar">
+                <div id="weather-widget" class="status-widget">Weather: Clear</div>
+                <div id="clock-widget" class="status-widget">20:30:00 IST</div>
+            </div>
+            <h1>A Living World</h1>
+            <p>This dynamic landscape changes with time and weather. Explore our solutions for a greener tomorrow.</p>
+            <div class="controls-container">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="day-night-toggle">
+                    <span class="slider"></span>
+                </label>
+                <button id="rain-toggle" class="control-button">Simulate Rain</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="puzzle-modal" class="modal-overlay">
+        <div class="puzzle-container">
+            <button id="close-puzzle-button" class="close-button">&times;</button>
+            <h2>Nature Match Puzzle</h2>
+            <div class="puzzle-header">
+                <span>Level: <span id="level-display">1</span></span>
+                <span>Time Left: <span id="timer-display">--</span></span>
+            </div>
+            <div id="puzzle-grid" class="puzzle-grid"></div>
+            <div class="puzzle-status">
+                <span>Moves: <span id="moves-count">0</span></span>
+                <button id="reset-puzzle">Reset Game</button>
+            </div>
+            <div id="puzzle-message-area"></div>
+        </div>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const elements = {
+            body: document.body, sun: document.getElementById('sun'), moon: document.getElementById('moon'),
+            starsContainer: document.getElementById('stars-container'), infoCard: document.getElementById('info-card'),
+            grass: document.getElementById('grass-container'), fireflyContainer: document.getElementById('firefly-container'),
+            weatherWidget: document.getElementById('weather-widget'), clockWidget: document.getElementById('clock-widget'),
+            dayNightToggle: document.getElementById('day-night-toggle'), rainToggle: document.getElementById('rain-toggle'),
+            allMountains: document.querySelectorAll('.mountain-svg path'),
+            allClouds: document.querySelectorAll('.cloud'),
+            nav: document.querySelector('nav'),
+            navTextElements: document.querySelectorAll('nav .logo, nav .nav-links a, nav .nav-button.login'),
+            smallTreesContainer: document.getElementById('small-trees-container'),
+            butterflyContainer: document.getElementById('butterfly-container'),
+            birdsContainer: document.getElementById('birds-container'),
+            puzzleLink: document.getElementById('puzzle-link'),
+            puzzleModal: document.getElementById('puzzle-modal'),
+            closePuzzleButton: document.getElementById('close-puzzle-button'),
+            puzzleGrid: document.getElementById('puzzle-grid'),
+            movesCount: document.getElementById('moves-count'),
+            resetPuzzle: document.getElementById('reset-puzzle'),
+            levelDisplay: document.getElementById('level-display'),
+            timerDisplay: document.getElementById('timer-display'),
+            puzzleMessageArea: document.getElementById('puzzle-message-area')
+        };
+
+        let manualMode = false;
+        let rainInterval = null;
+
+        const timeConfigs = {
+            dawn: { skyTop: '#F3A9A1', skyBottom: '#FBC2A9', grassColor: '#8FBC8F', grassDarker: '#556B2F', mountainColor: '#BCA4A4', mountainStroke: '#8F7A7A', treeColor: '#5D4037', leafColor: '#81C784', starsOpacity: 0.5, textColor: '#4A4A4A', glassBg: 'rgba(255, 255, 255, 0.2)', cloudColor: 'rgba(255, 220, 220, 0.7)', showDayFauna: true },
+            day: { skyTop: '#87CEEB', skyBottom: '#B0E0E6', grassColor: '#6B8E23', grassDarker: '#556B2F', mountainColor: '#A9A9A9', mountainStroke: '#696969', treeColor: '#5D4037', leafColor: '#66BB6A', starsOpacity: 0, textColor: '#263238', glassBg: 'rgba(255, 255, 255, 0.15)', cloudColor: 'rgba(255, 255, 255, 0.8)', showDayFauna: true },
+            dusk: { skyTop: '#4682B4', skyBottom: '#FF7F50', grassColor: '#556B2F', grassDarker: '#2F4F4F', mountainColor: '#778899', mountainStroke: '#2F4F4F', treeColor: '#4A342E', leafColor: '#558B2F', starsOpacity: 0.5, textColor: '#F0F8FF', glassBg: 'rgba(0, 0, 0, 0.2)', cloudColor: 'rgba(200, 200, 220, 0.6)', showDayFauna: true },
+            night: { skyTop: '#000033', skyBottom: '#191970', grassColor: '#2F4F4F', grassDarker: '#003300', mountainColor: '#36454F', mountainStroke: '#1A2421', treeColor: '#3E2723', leafColor: '#2E7D32', starsOpacity: 1, textColor: '#E0E0E0', glassBg: 'rgba(0, 0, 0, 0.3)', cloudColor: 'rgba(180, 180, 200, 0.5)', showDayFauna: false }
+        };
+
+        function initializeUI() {
+             setTimeout(() => {
+                elements.infoCard.classList.add('visible');
+                elements.nav.classList.add('visible');
+            }, 1000);
+        }
+
+        function updateScene() {
+            if (manualMode) return;
+            const now = new Date();
+            const hour = now.getHours() + now.getMinutes() / 60;
+            const config = getConfigForHour(hour);
+            applyConfig(config);
+            updateCelestialPositions(hour);
+            updateClock(now);
+            requestAnimationFrame(updateScene);
+        }
+
+        function updateClock(now) {
+            elements.clockWidget.textContent = now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' }) + " IST";
+        }
+        
+        function getConfigForHour(hour) {
+            if (hour >= 5 && hour < 7) return timeConfigs.dawn;
+            if (hour >= 7 && hour < 17) return timeConfigs.day;
+            if (hour >= 17 && hour < 19) return timeConfigs.dusk;
+            return timeConfigs.night;
+        }
+
+        function updateCelestialPositions(hour) {
+            const sunProgress = (hour - 6) / 12; // Cycle from 6am to 6pm
+            const sunAngle = sunProgress * Math.PI;
+            
+            const moonProgress = (hour >= 18) ? (hour - 18) / 12 : (hour + 6) / 12; // Cycle from 6pm to 6am
+            const moonAngle = moonProgress * Math.PI;
+
+            const sunIsVisible = hour >= 5 && hour < 19;
+            elements.sun.style.opacity = sunIsVisible ? '1' : '0';
+            if (sunIsVisible) {
+                const sunX = 50 - Math.cos(sunAngle) * 60; 
+                const sunY = 100 - Math.sin(sunAngle) * 80;
+                elements.sun.style.left = `calc(${sunX}% - 40px)`;
+                elements.sun.style.top = `calc(${sunY}% - 40px)`;
+            }
+            
+            const moonIsVisible = hour < 7 || hour >= 17;
+            elements.moon.style.opacity = moonIsVisible ? '1' : '0';
+            if (moonIsVisible) {
+                const moonX = 50 - Math.cos(moonAngle) * 50;
+                const moonY = 100 - Math.sin(moonAngle) * 85;
+                elements.moon.style.left = `calc(${moonX}% - 35px)`;
+                elements.moon.style.top = `calc(${moonY}% - 35px)`;
+            }
+        }
+
+        function applyConfig(config) {
+            elements.body.style.background = `linear-gradient(to bottom, ${config.skyTop}, ${config.skyBottom})`;
+            elements.starsContainer.style.opacity = config.starsOpacity;
+            elements.grass.style.background = `linear-gradient(to top, ${config.grassDarker}, ${config.grassColor})`;
+            elements.infoCard.style.color = config.textColor;
+            elements.infoCard.style.background = config.glassBg;
+            document.documentElement.style.setProperty('--text-color', config.textColor);
+            document.documentElement.style.setProperty('--tree-color', config.treeColor);
+            document.documentElement.style.setProperty('--leaf-color', config.leafColor);
+            elements.navTextElements.forEach(el => el.style.color = config.textColor);
+
+            elements.allMountains.forEach(p => { p.style.fill = config.mountainColor; p.style.stroke = config.mountainStroke; });
+            elements.allClouds.forEach(c => c.style.backgroundColor = config.cloudColor);
+            
+            elements.fireflyContainer.style.opacity = config.starsOpacity > 0 ? '1' : '0';
+            elements.butterflyContainer.style.opacity = config.showDayFauna ? '1' : '0';
+            elements.birdsContainer.style.opacity = config.showDayFauna ? '1' : '0';
+        }
+
+        function createStarsAndFireflies() {
+            for (let i = 0; i < 150; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                const size = Math.random() * 2 + 1;
+                star.style.cssText = `width:${size}px; height:${size}px; top:${Math.random()*100}%; left:${Math.random()*100}%; animation-delay:${Math.random()*2}s;`;
+                elements.starsContainer.appendChild(star);
+            }
+            for (let i = 0; i < 15; i++) {
+                const firefly = document.createElement('div');
+                firefly.className = 'firefly';
+                firefly.style.cssText = `top: ${60 + Math.random() * 30}%; left: ${10 + Math.random() * 80}%; animation-delay:${Math.random()*4}s;`;
+                elements.fireflyContainer.appendChild(firefly);
+            }
+        }
+        
+        function createFlora() {
+            const treeData = [
+                { left: '15%', width: '120px', height: '180px', zIndex: 0, delay: '-5s' },
+                { left: '80%', width: '100px', height: '150px', zIndex: 0, delay: '-10s' },
+                { left: '5%', width: '80px', height: '120px', zIndex: 9, delay: '-2s' },
+                { left: '90%', width: '90px', height: '130px', zIndex: 9, delay: '-8s' },
+            ];
+            treeData.forEach(data => {
+                const tree = document.createElement('div');
+                tree.className = 'small-tree';
+                tree.style.left = data.left;
+                tree.style.width = data.width;
+                tree.style.height = data.height;
+                tree.style.zIndex = data.zIndex;
+                tree.style.animationDelay = data.delay;
+                tree.innerHTML = `
+                    <svg width="100%" height="100%" viewBox="0 0 100 150">
+                        <path d="M50 150 V50 M50 90 Q30 80 20 65 M50 90 Q70 80 80 65" />
+                        <circle class="leaf" cx="20" cy="60" r="10" />
+                        <circle class="leaf" cx="80" cy="60" r="10" />
+                        <circle class="leaf" cx="50" cy="40" r="15" />
+                    </svg>
+                `;
+                elements.smallTreesContainer.appendChild(tree);
+            });
+        }
+
+        function createFauna() {
+            for (let i = 0; i < 5; i++) {
+                const butterfly = document.createElement('div');
+                butterfly.className = 'butterfly';
+                butterfly.innerHTML = `<div class="wing left-wing"></div><div class="wing right-wing"></div>`;
+                butterfly.style.top = `${30 + Math.random() * 40}%`;
+                butterfly.style.left = `${10 + Math.random() * 80}%`;
+                butterfly.style.animationDelay = `${Math.random() * 15}s`;
+                const wingColor = `hsl(${Math.random() * 60 + 20}, 90%, 60%)`;
+                butterfly.querySelectorAll('.wing').forEach(w => w.style.background = wingColor);
+                elements.butterflyContainer.appendChild(butterfly);
+            }
+
+            for (let i = 0; i < 5; i++) {
+                const bird = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                bird.setAttribute('class', 'bird-svg');
+                bird.setAttribute('viewBox', '0 0 30 20');
+                bird.innerHTML = `<path d="M0 10 Q 15 0 30 10 L 15 15 Z" />`;
+                bird.style.top = `${Math.random() * 60}px`;
+                bird.style.left = `${i * 40}px`;
+                bird.style.animationDelay = `${Math.random() * 0.5}s`;
+                elements.birdsContainer.appendChild(bird);
+            }
+             setInterval(() => {
+                elements.birdsContainer.classList.remove('flying');
+                void elements.birdsContainer.offsetWidth;
+                elements.birdsContainer.classList.add('flying');
+            }, 30000);
+        }
+
+        function toggleRain() {
+            if (rainInterval) {
+                clearInterval(rainInterval);
+                rainInterval = null;
+                elements.weatherWidget.textContent = "Weather: Clear";
+            } else {
+                elements.weatherWidget.textContent = "Weather: Raining";
+                const weatherContainer = document.getElementById('weather-container');
+                rainInterval = setInterval(() => {
+                    const drop = document.createElement('div');
+                    drop.className = 'raindrop';
+                    drop.style.left = `${Math.random() * 100}vw`;
+                    drop.style.animationDuration = `${0.5 + Math.random() * 0.5}s`;
+                    weatherContainer.appendChild(drop);
+                    setTimeout(() => drop.remove(), 2000);
+                }, 50);
+            }
+        }
+
+        // --- Puzzle Logic ---
+        const allPuzzleIcons = ['🌳', '🦋', '🐦', '🍁', '🍄', '🌸', '☀️', '💧', '🌍', '⭐', '🌙', '🌊', '🐚', '🐟', '🐞', '🐢', '🌱', '⛰️'];
+        const levelsConfig = [
+            { level: 1, pairs: 8, cols: 4, time: null },
+            { level: 2, pairs: 10, cols: 5, time: 90 },
+            { level: 3, pairs: 12, cols: 6, time: 120 },
+            { level: 4, pairs: 15, cols: 6, time: 150 },
+            { level: 5, pairs: 18, cols: 6, time: 180 },
+        ];
+        let currentLevel = 1;
+        let flippedCards = [];
+        let lockBoard = false;
+        let moves = 0;
+        let timerInterval = null;
+
+        function startLevel(level) {
+            currentLevel = level;
+            const config = levelsConfig.find(l => l.level === level);
+            if (!config) return;
+
+            lockBoard = false;
+            moves = 0;
+            elements.movesCount.textContent = moves;
+            elements.levelDisplay.textContent = level;
+            elements.puzzleMessageArea.innerHTML = '';
+            flippedCards = [];
+            
+            const iconsForLevel = allPuzzleIcons.slice(0, config.pairs);
+            const gameIcons = [...iconsForLevel, ...iconsForLevel].sort(() => 0.5 - Math.random());
+            
+            elements.puzzleGrid.innerHTML = '';
+            elements.puzzleGrid.style.gridTemplateColumns = `repeat(${config.cols}, 1fr)`;
+            
+            gameIcons.forEach(icon => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.dataset.icon = icon;
+                card.innerHTML = `<div class="card-face card-front"></div><div class="card-face card-back">${icon}</div>`;
+                elements.puzzleGrid.appendChild(card);
+            });
+            startTimer(config.time);
+        }
+        
+        function startTimer(duration) {
+            clearInterval(timerInterval);
+            if (duration === null) {
+                elements.timerDisplay.textContent = '∞';
+                return;
+            }
+            let time = duration;
+            const update = () => {
+                const minutes = Math.floor(time / 60);
+                const seconds = time % 60;
+                elements.timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                if (time === 0) {
+                    clearInterval(timerInterval);
+                    lockBoard = true;
+                    elements.puzzleMessageArea.innerHTML = `<h3>Time's Up!</h3><p>Try this level again.</p>`;
+                }
+                time--;
+            };
+            update();
+            timerInterval = setInterval(update, 1000);
+        }
+
+        function handleCardClick(e) {
+            const clickedCard = e.target.closest('.card');
+            if (lockBoard || !clickedCard || clickedCard.classList.contains('flipped') || clickedCard.classList.contains('matched')) return;
+
+            clickedCard.classList.add('flipped');
+            flippedCards.push(clickedCard);
+
+            if (flippedCards.length === 2) {
+                moves++;
+                elements.movesCount.textContent = moves;
+                checkForMatch();
+            }
+        }
+
+        function checkForMatch() {
+            lockBoard = true;
+            const [cardOne, cardTwo] = flippedCards;
+            cardOne.dataset.icon === cardTwo.dataset.icon ? disableCards() : unflipCards();
+        }
+
+        function disableCards() {
+            flippedCards.forEach(card => card.classList.add('matched'));
+            const config = levelsConfig.find(l => l.level === currentLevel);
+            if (document.querySelectorAll('.card.matched').length === config.pairs * 2) {
+                levelWon();
+            }
+            resetBoard();
+        }
+        
+        function levelWon() {
+            clearInterval(timerInterval);
+            setTimeout(() => {
+                if (currentLevel < levelsConfig.length) {
+                    elements.puzzleMessageArea.innerHTML = `<h3>Level Complete!</h3><button id="next-level-button">Next Level</button>`;
+                    document.getElementById('next-level-button').addEventListener('click', () => startLevel(currentLevel + 1));
+                } else {
+                    elements.puzzleMessageArea.innerHTML = `<h3>Congratulations!</h3><p>You've completed all levels!</p>`;
+                }
+            }, 500);
+        }
+
+        function unflipCards() {
+            setTimeout(() => {
+                flippedCards.forEach(card => card.classList.remove('flipped'));
+                resetBoard();
+            }, 1000);
+        }
+        
+        function resetBoard() {
+            [flippedCards, lockBoard] = [[], false];
+        }
+
+        // --- Event Listeners ---
+        elements.dayNightToggle.addEventListener('change', (e) => {
+            manualMode = true;
+            const isDay = e.target.checked;
+            applyConfig(isDay ? timeConfigs.day : timeConfigs.night);
+            updateCelestialPositions(isDay ? 12 : 0);
+        });
+        elements.rainToggle.addEventListener('click', toggleRain);
+
+        elements.puzzleLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            elements.puzzleModal.classList.add('visible');
+            startLevel(1);
+        });
+        elements.closePuzzleButton.addEventListener('click', () => {
+            elements.puzzleModal.classList.remove('visible');
+            clearInterval(timerInterval);
+        });
+        elements.resetPuzzle.addEventListener('click', () => startLevel(1));
+        elements.puzzleGrid.addEventListener('click', handleCardClick);
+
+        // --- Initialization ---
+        initializeUI();
+        createStarsAndFireflies();
+        createFlora();
+        createFauna();
+        const initialHour = new Date().getHours();
+        elements.dayNightToggle.checked = (initialHour >= 7 && initialHour < 17);
+        updateCelestialPositions(initialHour);
+        updateScene();
+    });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        :root {
+            --sky-top: #89CFF0;
+            --sky-bottom: #c2e9fb;
+            --tree-color: #6D4C41;
+            --leaf-color: #66BB6A;
+            --leaf-darker: #4CAF50;
+            --form-bg: rgba(255, 255, 255, 0.65);
+            --text-color: #263238;
+            --primary-color: #4CAF50;
+            --primary-hover: #43A047;
+            --sun-color: #FFD700;
+            --cloud-color: rgba(255, 255, 255, 0.85);
+            --success-color: #388E3C;
+            --error-color: #D32F2F;
+        }
+
+        
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: linear-gradient(to bottom, var(--sky-top), var(--sky-bottom));
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .scene-container {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        /* --- Sun --- */
+        .sun {
+            position: absolute;
+            top: 8%;
+            left: 10%;
+            width: 80px;
+            height: 80px;
+            background: var(--sun-color);
+            border-radius: 50%;
+            box-shadow: 0 0 20px 5px var(--sun-color);
+            animation: rotateSun 60s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes rotateSun {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- Cloud Styles --- */
+        #cloud-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; z-index: 1;
+        }
+        .cloud {
+            position: absolute; background: var(--cloud-color); border-radius: 50%;
+            opacity: 0.9; filter: blur(2px); animation: animateCloud linear infinite;
+        }
+        .cloud::before, .cloud::after {
+            content: ''; position: absolute; background: var(--cloud-color); border-radius: 50%;
+        }
+        .cloud1 { width: 150px; height: 150px; top: 15%; animation-duration: 45s; animation-delay: -5s; }
+        .cloud1::before { width: 100px; height: 100px; top: 30px; left: -60px; }
+        .cloud1::after { width: 120px; height: 120px; top: 20px; right: -70px; }
+        .cloud2 { width: 100px; height: 100px; top: 30%; animation-duration: 30s; animation-delay: -15s; }
+        .cloud2::before { width: 70px; height: 70px; top: 20px; left: -40px; }
+        .cloud2::after { width: 80px; height: 80px; top: 15px; right: -50px; }
+        .cloud3 { width: 120px; height: 120px; top: 50%; animation-duration: 40s; animation-delay: 0s; }
+        .cloud3::before { width: 80px; height: 80px; top: 25px; left: -50px; }
+        .cloud3::after { width: 90px; height: 90px; top: 20px; right: -60px; }
+        @keyframes animateCloud { from { transform: translateX(110vw); } to { transform: translateX(-300px); } }
+        
+        #tree-container {
+            width: 300px; height: 400px; position: relative; bottom: 0; 
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); z-index: 2;
+        }
+        #tree-svg path {
+            stroke: var(--tree-color); stroke-width: 4; stroke-linecap: round;
+            fill: none; stroke-dasharray: 1000; stroke-dashoffset: 1000;
+        }
+        .animate-draw { animation: draw 3s ease-out forwards; }
+        @keyframes draw { to { stroke-dashoffset: 0; } }
+        .tree-leaf {
+            fill: var(--leaf-color); stroke: var(--leaf-darker); stroke-width: 0.5;
+            opacity: 0; transform-origin: center; animation: grow-leaf 0.5s ease-out forwards;
+        }
+        @keyframes grow-leaf { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        
+        /* Login form styling */
+        #login-container {
+            position: relative; width: 90%; max-width: 380px; padding: 2.5rem;
+            background: var(--form-bg); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15); color: var(--text-color);
+            opacity: 0; transform: translateY(50px);
+            transition: opacity 1.5s ease-out, transform 1.5s ease-out; z-index: 10;
+        }
+        #login-container.visible { opacity: 1; transform: translateY(0); }
+        #login-container h2 {
+            text-align: center; margin-top: 0; margin-bottom: 2rem;
+            font-weight: 600; font-size: 1.8rem;
+        }
+        
+        .score-container {
+            position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+            background: white; padding: 10px 20px; border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; align-items: center;
+            font-weight: 600; color: var(--primary-color); font-size: 1.2rem;
+        }
+        .score-container svg { width: 24px; height: 24px; margin-right: 8px; fill: var(--primary-color); }
+
+        .input-group { position: relative; margin-bottom: 1.5rem; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 1rem; box-sizing: border-box; 
+            background: rgba(255, 255, 255, 0.7); border: 1px solid rgba(0, 0, 0, 0.1); 
+            border-radius: 10px; color: var(--text-color); font-size: 1rem; 
+            font-family: 'Poppins', sans-serif; transition: all 0.3s ease;
+            -webkit-appearance: none; /* Removes default safari styling */
+            -moz-appearance: none; /* Removes default firefox styling */
+            appearance: none;
+        }
+        .input-group select {
+             background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23607D8B%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22/%3E%3C/svg%3E');
+             background-repeat: no-repeat;
+             background-position: right 1rem center;
+             background-size: .65em auto;
+             padding-right: 2.5rem;
+        }
+        .input-group label {
+            position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+            color: #aaa; pointer-events: none; transition: all 0.3s ease;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none; border-color: var(--primary-color); 
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+        .input-group input:focus + label,
+        .input-group input:not(:placeholder-shown) + label,
+        .input-group select:valid + label {
+            top: -10px; left: 10px; font-size: 0.8rem; color: var(--primary-color);
+            background: #fff; padding: 0 5px;
+        }
+        .input-group select:required:invalid { color: #aaa; }
+        .input-group option { color: var(--text-color); }
+        
+        #password-toggle { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); cursor: pointer; color: #aaa; }
+        #password-toggle svg { width: 20px; height: 20px; }
+
+        /* Error State */
+        .input-group.error input, .input-group.error select { border-color: var(--error-color); }
+        .input-group.error label { color: var(--error-color); }
+        #error-message { color: var(--error-color); text-align: center; min-height: 20px; font-size: 0.9rem; margin-bottom: 1rem; }
+        .shake { animation: shake 0.5s ease-in-out; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        #login-btn {
+            width: 100%; padding: 1rem; border: none; border-radius: 10px; background: var(--primary-color);
+            color: white; font-size: 1.1rem; font-weight: 600; cursor: pointer; 
+            transition: background-color 0.3s, transform 0.1s; position: relative; overflow: hidden;
+        }
+        #login-btn:hover { background-color: var(--primary-hover); }
+        #login-btn:active { transform: scale(0.98); }
+        #login-btn.loading .btn-text { visibility: hidden; }
+        #login-btn.loading::after {
+            content: ''; position: absolute; width: 20px; height: 20px; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: white; border-radius: 50%; animation: spin 1s linear infinite;
+        }
+        #login-btn.success { background-color: var(--success-color); }
+        @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+        .form-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 1.5rem; font-size: 0.9rem;
+        }
+        .form-footer a {
+            color: var(--primary-color); text-decoration: none; font-weight: 500;
+            transition: all 0.3s;
+        }
+        .form-footer a:hover { text-decoration: underline; }
+
+        /* Initially hide the forgot password link */
+        #forgot-password-link {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #forgot-password-link.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
+        /* Forgot Password Modal */
+        #modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s;
+        }
+        #modal-overlay.visible { opacity: 1; visibility: visible; }
+        #modal-container {
+            background: white; padding: 2.5rem; border-radius: 20px;
+            width: 90%; max-width: 400px;
+            transform: scale(0.9); transition: transform 0.3s;
+        }
+        #modal-overlay.visible #modal-container { transform: scale(1); }
+        #modal-container h3 { margin-top: 0; }
+        #modal-container p { margin-bottom: 1.5rem; color: #666; }
+        #modal-close {
+            position: absolute; top: 1rem; right: 1rem;
+            cursor: pointer; background: none; border: none; font-size: 1.5rem; color: #999;
+        }
+        .home-button {
+        position: absolute;
+        top: 2rem;
+        right: 2rem;
+        z-index: 10; 
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.75rem 1.25rem;
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(10px);
+        border-radius: 25px;
+        color: var(--text-color);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        }
+
+.home-button:hover {
+  background: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.home-button svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--primary-color);
+}
+    </style>
+</head>
+{% if messages %}
+<div id="popup-message" class="popup-container">
+    {% for message in messages %}
+    <div class="popup {{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    // Auto-hide popup after 3s
+    setTimeout(() => {
+        const popup = document.getElementById("popup-message");
+        if (popup) popup.style.display = "none";
+    }, 3000);
+</script>
+
+<style>
+.popup-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+.popup {
+    background: #2E8B57; /* green */
+    color: white;
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    animation: fadeIn 0.5s ease;
+}
+.popup.error { background: #c0392b; }
+.popup.warning { background: #e67e22; }
+.popup.success { background: #27ae60; }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+{% endif %}
+
+<body>
+
+    <div class="scene-container">
+        <div class="sun"></div>
+        <div id="cloud-container">
+            <div class="cloud cloud1"></div><div class="cloud cloud2"></div><div class="cloud cloud3"></div>
+        </div>
+        <div id="tree-container">
+            <svg id="tree-svg" width="100%" height="100%" viewBox="0 0 100 133">
+                <path id="trunk" d="M50 133 V30"/><path id="branch1" d="M50 50 Q60 40 70 30"/><path id="branch2" d="M50 60 Q40 50 30 40"/>
+                <path id="branch3" d="M50 80 Q70 70 85 65"/><path id="branch4" d="M50 90 Q30 80 15 75"/><path id="branch5" d="M50 40 Q45 30 40 20"/>
+                <path id="branch6" d="M50 45 Q55 35 60 25"/><g id="leaves-on-tree-group"></g>
+            </svg>
+        </div>
+    </div>
+
+    <div id="login-container">
+        <div class="score-container">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-3.5-3.5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"></path></svg>
+            <span id="score">0</span> Green Score
+        </div>
+
+        <h2>Welcome to GreenQuest!</h2>
+        <form id="login-form" method="post" novalidate>
+            {% csrf_token %}
+            <div id="error-message"></div>
+            <div class="input-group">
+                <select id="role" name="role" required>
+                    <option value="" disabled selected>Select Your Role</option>
+          <option value="school_student">School Student</option>
+          <option value="college_student">College Student</option>
+          <option value="school_teacher">School Teacher</option>
+          <option value="college_teacher">College Teacher</option>
+          <option value="ngo">NGO</option>
+          <option value="government">Government</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <input  id="username" name="username" required placeholder=" ">
+                <label for="username">Username</label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="password" required placeholder=" ">
+                <label for="password">Password</label>
+                <span id="password-toggle">
+                    <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path></svg>
+                    <svg id="eye-closed" style="display:none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"></path></svg>
+                </span>
+            </div>
+            <button type="submit" id="login-btn"><span class="btn-text">Login</span></button>
+        </form>
+        <div class="form-footer">
+            <a href="#" id="forgot-password-link">Forgot Password?</a>
+            <a href="{% url 'signup' %}">Register here</a>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div id="modal-overlay">
+        <div id="modal-container">
+            <button id="modal-close">&times;</button>
+            <h3>Reset Your Password</h3>
+            <p>Enter your email and we'll send you a link to get back into your account.</p>
+             <form id="reset-form">
+                <div class="input-group">
+                    <input type="email" id="reset-email" required placeholder=" ">
+                    <label for="reset-email">Email Address</label>
+                </div>
+                <button type="submit" id="reset-btn" class="login-btn"><span class="btn-text">Send Reset Link</span></button>
+            </form>
+        </div>
+    </div>
+    <div class="home-button" onclick="window.location.href='index.html'">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+       <a href="{% url 'home' %}"> Home</a> 
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Scene animation elements
+            const treePaths = document.querySelectorAll('#tree-svg path');
+            const leavesOnTreeGroup = document.getElementById('leaves-on-tree-group');
+            const loginContainer = document.getElementById('login-container');
+            const totalGrowthTime = 3000;
+            const leafPositions = [
+                { cx: 70, cy: 30, rx: 5, ry: 3 }, { cx: 75, cy: 28, rx: 5, ry: 3 }, { cx: 30, cy: 40, rx: 5, ry: 3 }, { cx: 25, cy: 38, rx: 5, ry: 3 },
+                { cx: 85, cy: 65, rx: 5, ry: 3 }, { cx: 90, cy: 63, rx: 5, ry: 3 }, { cx: 15, cy: 75, rx: 5, ry: 3 }, { cx: 10, cy: 73, rx: 5, ry: 3 },
+                { cx: 40, cy: 20, rx: 5, ry: 3 }, { cx: 35, cy: 18, rx: 5, ry: 3 }, { cx: 60, cy: 25, rx: 5, ry: 3 }, { cx: 65, cy: 23, rx: 5, ry: 3 }
+            ];
+
+            // Form and Modal elements
+            const loginForm = document.getElementById('login-form');
+            const loginBtn = document.getElementById('login-btn');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const errorMessage = document.getElementById('error-message');
+            const modalOverlay = document.getElementById('modal-overlay');
+            const forgotPasswordLink = document.getElementById('forgot-password-link');
+            const modalCloseBtn = document.getElementById('modal-close');
+
+            // --- Initial Scene Animations ---
+            treePaths.forEach((path, index) => {
+                path.style.animationDelay = `${index * 0.25}s`;
+                path.classList.add('animate-draw');
+            });
+
+            setTimeout(() => {
+                leavesOnTreeGroup.innerHTML = ''; // Clear existing leaves if any
+                leafPositions.forEach((pos, i) => {
+                    const leaf = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+                    leaf.setAttribute('cx', pos.cx); leaf.setAttribute('cy', pos.cy);
+                    leaf.setAttribute('rx', pos.rx); leaf.setAttribute('ry', pos.ry);
+                    leaf.classList.add('tree-leaf');
+                    leaf.style.animationDelay = `${i * 0.05}s`;
+                    leavesOnTreeGroup.appendChild(leaf);
+                });
+            }, totalGrowthTime - 500);
+            
+            setTimeout(() => {
+                loginContainer.classList.add('visible');
+                animateGreenScore(2025);
+            }, totalGrowthTime + 500);
+
+            function animateGreenScore(targetScore) {
+                const scoreElement = document.getElementById('score');
+                let currentScore = 0;
+                const interval = setInterval(() => {
+                    currentScore += Math.ceil(targetScore / 100);
+                    if (currentScore >= targetScore) {
+                        currentScore = targetScore; clearInterval(interval);
+                    }
+                    scoreElement.textContent = currentScore;
+                }, 20);
+            }
+
+            // --- Form Logic ---
+            
+            // Password Visibility Toggle
+            const passwordToggle = document.getElementById('password-toggle');
+            const eyeOpen = document.getElementById('eye-open');
+            const eyeClosed = document.getElementById('eye-closed');
+            passwordToggle.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                eyeOpen.style.display = (type === 'password') ? 'block' : 'none';
+                eyeClosed.style.display = (type === 'password') ? 'none' : 'block';
+            });
+            
+            // Clear errors on input
+            [emailInput, passwordInput].forEach(input => {
+                input.addEventListener('input', () => {
+                   clearErrors();
+                });
+            });
+
+            // Form Submission
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                clearErrors();
+
+                // Basic validation
+                if (!loginForm.checkValidity()) {
+                    showError("Please fill in all required fields.");
+                    return;
+                }
+                
+                const btnText = loginBtn.querySelector('.btn-text');
+                loginBtn.classList.add('loading');
+                btnText.textContent = 'Logging in...';
+
+                // --- Simulate API Call ---
+                setTimeout(() => {
+                    // DEMO: Check for a specific password
+                    if (passwordInput.value === 'password123') {
+                        // SUCCESS
+                        loginBtn.classList.remove('loading');
+                        loginBtn.classList.add('success');
+                        btnText.textContent = 'Success!';
+                        // setTimeout(() => { window.location.href = '/dashboard'; }, 1500);
+                    } else {
+                        // FAILURE
+                        loginBtn.classList.remove('loading');
+                        loginContainer.classList.add('shake');
+                        emailInput.parentElement.classList.add('error');
+                        passwordInput.parentElement.classList.add('error');
+                        showError("Invalid credentials. Please try again.");
+                        forgotPasswordLink.classList.add('visible'); // Show the link on error
+                        btnText.textContent = 'Login'; // Reset button text
+                    }
+                }, 2000);
+            });
+            
+            function showError(message) {
+                 errorMessage.textContent = message;
+            }
+
+            function clearErrors() {
+                errorMessage.textContent = '';
+                loginContainer.classList.remove('shake');
+                emailInput.parentElement.classList.remove('error');
+                passwordInput.parentElement.classList.remove('error');
+                forgotPasswordLink.classList.remove('visible'); // Hide the link when clearing errors
+            }
+
+
+            // --- Modal Logic ---
+            forgotPasswordLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                modalOverlay.classList.add('visible');
+            });
+            modalCloseBtn.addEventListener('click', () => modalOverlay.classList.remove('visible'));
+            modalOverlay.addEventListener('click', (e) => {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('visible');
+                }
+            });
+
+             // --- Reset Form Submission --- (Inside Modal)
+            const resetForm = document.getElementById('reset-form');
+            const resetBtn = document.getElementById('reset-btn');
+            resetForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const btnText = resetBtn.querySelector('.btn-text');
+                resetBtn.classList.add('loading');
+                btnText.textContent = 'Sending...';
+
+                setTimeout(() => {
+                    resetBtn.classList.remove('loading');
+                    resetBtn.classList.add('success');
+                    btnText.textContent = 'Link Sent!';
+                    setTimeout(() => {
+                         modalOverlay.classList.remove('visible');
+                         // Reset button state for next time
+                         resetBtn.classList.remove('success');
+                         btnText.textContent = 'Send Reset Link';
+                    }, 2000);
+                }, 2000);
+            });
+
+        });
+    </script>
+</body>
+</html>
