@@ -1,4 +1,5 @@
-# Green Guardian - Django Project
+# Green Guardian - Django Project(Team Bytedragon)
+
 
 This project is a gamified learning platform for students and teachers focusing on environmental awareness.
 
@@ -67,7 +68,7 @@ python manage.py runserver
 ```
 
 
-### Super USer
+### Super User
 User Name:User
 Password:User1234
 
@@ -78,4 +79,9 @@ Password:User1234
 - venv_name/ : Virtual environment
 - templates/ : HTML templates
 - static/ : Game(Godot)
+
+## Contribution
+
+- Frontend:Manthan Vizuda
+- Game:Utsav laheru
 
